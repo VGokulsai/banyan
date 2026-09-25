@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Banyan</title>
+<meta name="description" content="A place where young builders in India get seen — for what they've shipped, not their credentials.">
+<meta property="og:title" content="Banyan — young builders in India, seen">
+<meta property="og:description" content="A place where young builders in India get seen — for what they've shipped, not their credentials.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* Banyan: warm, rooted, editorial. A page you gather under. */
+  :root{
+    --bg:#F6F1E7; --card:#FFFDF7; --ink:#20261F; --muted:#6E756A;
+    --green:#2F5D46; --leaf:#5C9C79; --accent:#E0763A; --line:#E6DECC;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:17px/1.6 "Instrument Sans","Segoe UI",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;display:flex;justify-content:center}
+  .wrap{width:100%;max-width:760px;padding:44px 22px 80px}
+  .mono{font-family:"JetBrains Mono",ui-monospace,monospace;text-transform:uppercase;letter-spacing:.1em;font-size:.7rem;color:var(--muted)}
+
+  /* header */
+  header{display:flex;align-items:baseline;gap:10px}
+  .mark{font-family:"Instrument Serif",Georgia,serif;font-size:2.1rem;line-height:1;color:var(--green)}
+  .leaf{font-size:1.4rem}
+  h1{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:clamp(2.6rem,7vw,4rem);
+    line-height:1.05;letter-spacing:-.01em;margin:26px 0 0}
+  h1 em{font-style:italic;color:var(--green)}
+  .tagline{color:var(--muted);font-size:1.15rem;margin:16px 0 0;max-width:52ch}
+  .tagline b{color:var(--ink);font-weight:600}
+  .note{margin-top:10px;font-size:.85rem;color:var(--accent);font-style:italic}
+
+  /* section head */
+  .sec{margin-top:52px}
+  .sec-h{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+  .sec-h .line{flex:1;height:1px;background:var(--line)}
+
+  /* builder cards */
+  .cards{display:flex;flex-direction:column;gap:16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 22px}
+  .card .name{font-family:"Instrument Serif",Georgia,serif;font-size:1.5rem;line-height:1.1;color:var(--ink)}
+  .card .meta{font-family:"JetBrains Mono",monospace;font-size:.72rem;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:.06em}
+  .card .blurb{margin:12px 0 14px;color:var(--ink)}
+  .ships{display:flex;flex-wrap:wrap;gap:8px}
+  .ship{display:inline-flex;align-items:center;gap:6px;text-decoration:none;
+    font-family:"JetBrains Mono",monospace;font-size:.8rem;color:var(--green);
+    background:rgba(47,93,70,.07);border:1px solid rgba(47,93,70,.18);border-radius:999px;padding:.35rem .75rem;transition:background .15s,transform .1s}
+  .ship:hover{background:rgba(47,93,70,.14)} .ship:active{transform:scale(.97)}
+  .ship .arw{color:var(--leaf)}
+
+  /* the open spot */
+  .card.open{background:none;border-style:dashed;text-align:center;color:var(--muted)}
+  .card.open .name{color:var(--green)}
+  .card.open p{margin:.5rem 0 0}
+
+  /* submit CTA */
+  .cta{margin-top:40px;background:var(--green);color:#F6F1E7;border-radius:18px;padding:28px 26px;text-align:center}
+  .cta h3{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:1.7rem;margin:0}
+  .cta p{margin:.5rem auto 18px;max-width:40ch;opacity:.85}
+  .cta a{display:inline-block;text-decoration:none;font-family:"JetBrains Mono",monospace;font-weight:600;
+    text-transform:uppercase;letter-spacing:.06em;font-size:.8rem;background:#F6F1E7;color:var(--green);
+    border-radius:999px;padding:.75rem 1.4rem;transition:transform .1s}
+  .cta a:active{transform:scale(.96)}
+
+  footer{margin-top:44px;color:var(--muted);font-family:"JetBrains Mono",monospace;font-size:.72rem;letter-spacing:.05em;text-align:center;line-height:1.7}
+  footer b{color:var(--green)}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <span class="leaf">🌳</span>
+      <span class="mark">Banyan</span>
+    </header>
+
+    <h1>Young builders in India, <em>seen.</em></h1>
+    <p class="tagline"><b>Proof, not pedigree.</b> A place for the kids building real things in India and getting ignored for it — so the next one doesn't build alone.</p>
+
+    <div class="sec">
+      <div class="sec-h"><span class="mono">The builders</span><span class="line"></span></div>
+      <div class="cards" id="cards"></div>
+    </div>
+
+    <div class="cta">
+      <h3>Built something? Get it seen.</h3>
+      <p>Shipped a tool, an app, a paper, a project — anything real? Send it in. No credentials needed.</p>
+      <a id="submit" href="#">Submit your build →</a>
+    </div>
+
+    <footer>
+      <b>Banyan</b> &middot; builders in India, seen &middot; started 2026<br>
+      made by a 16-year-old who was tired of being ignored
+    </footer>
+  </div>
+
+<script>
+// One array. Add a builder = add an object. That's the whole CMS.
+const BUILDERS = [
+  {
+    name: "Gokul Sai",
+    meta: "16 · Hyderabad · self-taught ML",
+    blurb: "Builds honest tools — ones that admit what they don't know. Reproduced an IIIT-Hyderabad research paper and co-authored one.",
+    ships: [
+      {label: "reflex", url: "https://github.com/VGokulsai/reflex"},
+      {label: "casefire", url: "https://vgokulsai.github.io/casefire/"},
+      {label: "chess-coach", url: "https://github.com/VGokulsai/chess-coach"},
+      {label: "paper reproduction", url: "https://github.com/VGokulsai/nllb-entity-mt"},
+      {label: "falsezero (paper)", url: "https://github.com/VGokulsai/falsezero"}
+    ]
+  }
+  // next builder goes here → { name, meta, blurb, ships:[{label,url}] }
+];
+
+// where "Submit your build" points — Gokul: swap this for your Google Form / email link.
+const SUBMIT_URL = "mailto:gokulsai1004@gmail.com?subject=My build for Banyan";
+
+const cards = document.getElementById("cards");
+BUILDERS.forEach(b => {
+  const el = document.createElement("div");
+  el.className = "card";
+  const ships = b.ships.map(s =>
+    `<a class="ship" href="${s.url}" target="_blank" rel="noopener">${s.label}<span class="arw">↗</span></a>`
+  ).join("");
+  el.innerHTML =
+    `<div class="name">${b.name}</div>` +
+    `<div class="meta">${b.meta}</div>` +
+    `<div class="blurb">${b.blurb}</div>` +
+    `<div class="ships">${ships}</div>`;
+  cards.appendChild(el);
+});
+// the open invitation, always last
+const open = document.createElement("div");
+open.className = "card open";
+open.innerHTML = `<div class="name">This spot is yours.</div><p>Building something in India and no one's looking? This is the spot.</p>`;
+cards.appendChild(open);
+
+document.getElementById("submit").href = SUBMIT_URL;
+
+// self-check: banyan.html?check
+if (location.search.includes("check")) {
+  const ok = document.querySelectorAll("#cards .card").length === BUILDERS.length + 1
+          && document.getElementById("submit").getAttribute("href") === SUBMIT_URL;
+  document.title = ok ? "OK" : "FAIL";
+  console.log(ok ? "banyan: renders builders + open spot" : "banyan FAILED");
+}
+</script>
+</body>
+</html>
