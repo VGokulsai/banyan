@@ -69,6 +69,13 @@
 
   footer{margin-top:44px;color:var(--muted);font-family:"JetBrains Mono",monospace;font-size:.72rem;letter-spacing:.05em;text-align:center;line-height:1.7}
   footer b{color:var(--green)}
+
+  /* Matt-style scroll reveal: gentle, restrained, off for reduced-motion */
+  @media (prefers-reduced-motion: no-preference){
+    .reveal{opacity:0;transform:translateY(18px);
+      transition:opacity .65s cubic-bezier(.22,.61,.36,1),transform .65s cubic-bezier(.22,.61,.36,1)}
+    .reveal.in{opacity:1;transform:none}
+  }
 </style>
 </head>
 <body>
@@ -140,6 +147,26 @@ open.innerHTML = `<div class="name">This spot is yours.</div><p>Building somethi
 cards.appendChild(open);
 
 document.getElementById("submit").href = SUBMIT_URL;
+
+// Matt-style scroll reveal — fade + rise as each piece enters view, lightly staggered.
+// Progressive enhancement: if the observer isn't supported or never fires, content still shows.
+const supportsIO = "IntersectionObserver" in window;
+const io = supportsIO ? new IntersectionObserver((es) => {
+  es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+}, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }) : null;
+function reveal(el, delay = 0) {
+  if (!el) return;
+  el.classList.add("reveal");
+  if (delay) el.style.transitionDelay = delay + "ms";
+  if (io) io.observe(el); else el.classList.add("in");
+}
+[document.querySelector("h1"), document.querySelector(".tagline"), document.querySelector(".sec-h")]
+  .forEach((el, i) => reveal(el, i * 80));
+[...document.querySelectorAll("#cards .card")].forEach((el, i) => reveal(el, i * 90));
+reveal(document.querySelector(".cta"));
+reveal(document.querySelector("footer"));
+// safety net: nothing ever stays hidden if the observer misses
+setTimeout(() => document.querySelectorAll(".reveal:not(.in)").forEach(el => el.classList.add("in")), 2500);
 
 // self-check: banyan.html?check
 if (location.search.includes("check")) {
