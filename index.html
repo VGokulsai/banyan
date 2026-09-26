@@ -4,73 +4,119 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Banyan</title>
-<meta name="description" content="A place where young builders in India get seen — for what they've shipped, not their credentials.">
-<meta property="og:title" content="Banyan — young builders in India, seen">
-<meta property="og:description" content="A place where young builders in India get seen — for what they've shipped, not their credentials.">
+<meta name="description" content="Young makers in India, seen. Code, design, video, writing — judged on what you've shipped, not your credentials.">
+<meta property="og:title" content="Banyan — young makers in India, seen">
+<meta property="og:description" content="Proof, not pedigree. A showcase of young makers in India and the work they've shipped.">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  /* Banyan: warm, rooted, editorial. A page you gather under. */
+  /* Banyan: warm, rooted, editorial. Cream, ink, one green. Nothing else. */
   :root{
     --bg:#F6F1E7; --card:#FFFDF7; --ink:#20261F; --muted:#6E756A;
-    --green:#2F5D46; --leaf:#5C9C79; --accent:#E0763A; --line:#E6DECC;
+    --green:#2F5D46; --leaf:#5C9C79; --line:#E6DECC;
   }
   *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
   body{margin:0;background:var(--bg);color:var(--ink);
     font:17px/1.6 "Instrument Sans","Segoe UI",system-ui,sans-serif;
     -webkit-font-smoothing:antialiased;display:flex;justify-content:center}
-  .wrap{width:100%;max-width:760px;padding:44px 22px 80px}
+  .wrap{width:100%;max-width:760px;padding:40px 20px 80px}
   .mono{font-family:"JetBrains Mono",ui-monospace,monospace;text-transform:uppercase;letter-spacing:.1em;font-size:.7rem;color:var(--muted)}
+  a{color:inherit}
 
   /* header */
-  header{display:flex;align-items:baseline;gap:10px}
-  .mark{font-family:"Instrument Serif",Georgia,serif;font-size:2.1rem;line-height:1;color:var(--green)}
-  .leaf{font-size:1.4rem}
-  h1{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:clamp(2.6rem,7vw,4rem);
-    line-height:1.05;letter-spacing:-.01em;margin:26px 0 0}
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .brand{display:flex;align-items:baseline;gap:9px;text-decoration:none}
+  .leaf{font-size:1.3rem}
+  .mark{font-family:"Instrument Serif",Georgia,serif;font-size:2rem;line-height:1;color:var(--green)}
+  nav{display:flex;gap:16px}
+  nav a{font-family:"JetBrains Mono",monospace;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);text-decoration:none}
+  nav a:hover{color:var(--green)}
+
+  /* hero */
+  h1{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:clamp(2.6rem,7.5vw,4.2rem);
+    line-height:1.03;letter-spacing:-.01em;margin:34px 0 0}
   h1 em{font-style:italic;color:var(--green)}
-  .tagline{color:var(--muted);font-size:1.15rem;margin:16px 0 0;max-width:52ch}
+  .tagline{color:var(--muted);font-size:1.12rem;margin:16px 0 0;max-width:52ch}
   .tagline b{color:var(--ink);font-weight:600}
-  .note{margin-top:10px;font-size:.85rem;color:var(--accent);font-style:italic}
+  .count{display:flex;align-items:baseline;gap:14px;margin-top:30px;padding-top:22px;border-top:1px solid var(--line)}
+  .count .n{font-family:"Instrument Serif",Georgia,serif;font-size:4.2rem;line-height:.8;color:var(--green);font-variant-numeric:tabular-nums}
+  .count .t{color:var(--muted);font-size:.95rem;line-height:1.35}
+  .count .t b{color:var(--ink);font-weight:600}
 
   /* section head */
-  .sec{margin-top:52px}
+  .sec{margin-top:56px;scroll-margin-top:20px}
   .sec-h{display:flex;align-items:center;gap:12px;margin-bottom:18px}
   .sec-h .line{flex:1;height:1px;background:var(--line)}
 
+  /* craft filter */
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+  .chip{font-family:"JetBrains Mono",monospace;font-size:.74rem;letter-spacing:.04em;cursor:pointer;
+    padding:.4rem .85rem;border-radius:999px;border:1px solid var(--line);background:none;color:var(--muted);transition:all .15s}
+  .chip:hover{border-color:var(--leaf);color:var(--green)}
+  .chip.on{background:var(--green);border-color:var(--green);color:var(--bg)}
+  .chip span{opacity:.6;margin-left:4px}
+
   /* builder cards */
   .cards{display:flex;flex-direction:column;gap:16px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 22px}
-  .card .name{font-family:"Instrument Serif",Georgia,serif;font-size:1.5rem;line-height:1.1;color:var(--ink)}
-  .card .meta{font-family:"JetBrains Mono",monospace;font-size:.72rem;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:.06em}
-  .card .blurb{margin:12px 0 14px;color:var(--ink)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;scroll-margin-top:20px;
+    transition:box-shadow .4s,border-color .4s}
+  .card[hidden]{display:none}
+  .card.flash{border-color:var(--leaf);box-shadow:0 0 0 4px rgba(92,156,121,.22)}
+  .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+  .card .name{font-family:"Instrument Serif",Georgia,serif;font-size:1.55rem;line-height:1.1}
+  .card .meta{font-family:"JetBrains Mono",monospace;font-size:.72rem;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.06em}
+  .crafts{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .craft{font-family:"JetBrains Mono",monospace;font-size:.66rem;text-transform:uppercase;letter-spacing:.07em;
+    color:var(--green);border:1px solid rgba(47,93,70,.25);border-radius:4px;padding:.12rem .4rem}
+  .share{flex:none;font-family:"JetBrains Mono",monospace;font-size:.7rem;color:var(--muted);background:none;
+    border:1px solid var(--line);border-radius:999px;padding:.3rem .65rem;cursor:pointer;transition:all .15s}
+  .share:hover{color:var(--green);border-color:var(--leaf)}
+  .card .blurb{margin:12px 0 14px}
   .ships{display:flex;flex-wrap:wrap;gap:8px}
   .ship{display:inline-flex;align-items:center;gap:6px;text-decoration:none;
     font-family:"JetBrains Mono",monospace;font-size:.8rem;color:var(--green);
     background:rgba(47,93,70,.07);border:1px solid rgba(47,93,70,.18);border-radius:999px;padding:.35rem .75rem;transition:background .15s,transform .1s}
   .ship:hover{background:rgba(47,93,70,.14)} .ship:active{transform:scale(.97)}
   .ship .arw{color:var(--leaf)}
-
-  /* the open spot */
+  .reach{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);font-size:.88rem;color:var(--muted)}
+  .reach a{color:var(--green);font-weight:600;text-decoration:none;border-bottom:1px solid rgba(47,93,70,.3)}
   .card.open{background:none;border-style:dashed;text-align:center;color:var(--muted)}
   .card.open .name{color:var(--green)}
   .card.open p{margin:.5rem 0 0}
+  .card.open a{color:var(--green);font-weight:600}
 
-  /* submit CTA */
-  .cta{margin-top:40px;background:var(--green);color:#F6F1E7;border-radius:18px;padding:28px 26px;text-align:center}
+  /* editorial blocks */
+  .block p{margin:.4rem 0 0;color:var(--ink)}
+  .block .muted{color:var(--muted)}
+  .steps{display:flex;flex-direction:column;gap:0;margin-top:6px}
+  .step{display:grid;grid-template-columns:52px 1fr;gap:10px;padding:16px 0;border-bottom:1px solid var(--line)}
+  .step:last-child{border-bottom:0}
+  .step .no{font-family:"Instrument Serif",Georgia,serif;font-size:1.9rem;line-height:1;color:var(--leaf)}
+  .step b{display:block;font-weight:600}
+  .step span{color:var(--muted);font-size:.95rem}
+
+  /* CTA */
+  .cta{margin-top:30px;background:var(--green);color:var(--bg);border-radius:18px;padding:28px 24px;text-align:center}
   .cta h3{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:1.7rem;margin:0}
-  .cta p{margin:.5rem auto 18px;max-width:40ch;opacity:.85}
+  .cta p{margin:.5rem auto 18px;max-width:42ch;opacity:.85}
   .cta a{display:inline-block;text-decoration:none;font-family:"JetBrains Mono",monospace;font-weight:600;
-    text-transform:uppercase;letter-spacing:.06em;font-size:.8rem;background:#F6F1E7;color:var(--green);
+    text-transform:uppercase;letter-spacing:.06em;font-size:.8rem;background:var(--bg);color:var(--green);
     border-radius:999px;padding:.75rem 1.4rem;transition:transform .1s}
   .cta a:active{transform:scale(.96)}
 
   footer{margin-top:44px;color:var(--muted);font-family:"JetBrains Mono",monospace;font-size:.72rem;letter-spacing:.05em;text-align:center;line-height:1.7}
   footer b{color:var(--green)}
 
-  /* Matt-style scroll reveal: gentle, restrained, off for reduced-motion */
+  /* toast */
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(90px);opacity:0;
+    background:var(--ink);color:var(--bg);font-family:"JetBrains Mono",monospace;font-size:.8rem;
+    padding:.55rem 1.1rem;border-radius:999px;transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .3s;z-index:9}
+  .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+  /* restrained scroll reveal, off for reduced-motion */
   @media (prefers-reduced-motion: no-preference){
     .reveal{opacity:0;transform:translateY(18px);
       transition:opacity .65s cubic-bezier(.22,.61,.36,1),transform .65s cubic-bezier(.22,.61,.36,1)}
@@ -79,38 +125,63 @@
 </style>
 </head>
 <body>
+  <div class="toast" id="toast"></div>
   <div class="wrap">
     <header>
-      <span class="leaf">🌳</span>
-      <span class="mark">Banyan</span>
+      <a class="brand" href="#"><span class="leaf">🌳</span><span class="mark">Banyan</span></a>
+      <nav><a href="#makers">Makers</a><a href="#hiring">Hiring</a><a href="#join">Join</a></nav>
     </header>
 
-    <h1>Young builders in India, <em>seen.</em></h1>
+    <h1>Young makers in India, <em>seen.</em></h1>
     <p class="tagline"><b>Proof, not pedigree.</b> A place for the kids building real things in India and getting ignored for it — so the next one doesn't build alone.</p>
 
-    <div class="sec">
-      <div class="sec-h"><span class="mono">The builders</span><span class="line"></span></div>
+    <div class="count">
+      <div class="n" id="count">0</div>
+      <div class="t"><b id="count-word">makers</b> on Banyan so far.<br>You could be next.</div>
+    </div>
+
+    <div class="sec" id="makers">
+      <div class="sec-h"><span class="mono">The makers</span><span class="line"></span></div>
+      <div class="chips" id="chips"></div>
       <div class="cards" id="cards"></div>
     </div>
 
-    <div class="cta">
-      <h3>Built something? Get it seen.</h3>
-      <p>Shipped a tool, an app, a paper, a project — anything real? Send it in. No credentials needed.</p>
-      <a id="submit" href="#">Submit your build →</a>
+    <div class="sec block" id="hiring">
+      <div class="sec-h"><span class="mono">Looking for talent?</span><span class="line"></span></div>
+      <p>Everyone here has <b>shipped something real</b> — code, design, video, writing. Filter by craft, open their work, and reach out through the link <i>they</i> chose.</p>
+      <p class="muted">No résumés, no marks. Just the work.</p>
+    </div>
+
+    <div class="sec block" id="join">
+      <div class="sec-h"><span class="mono">Get on Banyan</span><span class="line"></span></div>
+      <p>Code, design, video editing, writing, music — if you made it and it's out in the world, it counts.</p>
+      <div class="steps">
+        <div class="step"><div class="no">01</div><div><b>Send your work</b><span>Fill the short form: who you are, your craft, and links to what you've shipped.</span></div></div>
+        <div class="step"><div class="no">02</div><div><b>A real person looks at it</b><span>Every submission is read by hand. The only bar: it's real and it's yours.</span></div></div>
+        <div class="step"><div class="no">03</div><div><b>You go live, with your own link</b><span>You get a page spot you can share anywhere — bios, applications, DMs.</span></div></div>
+      </div>
+      <div class="cta">
+        <h3>Made something? Get it seen.</h3>
+        <p>No degree, no connections, no fee. Just proof.</p>
+        <a id="submit" href="#">Submit your work →</a>
+      </div>
     </div>
 
     <footer>
-      <b>Banyan</b> &middot; builders in India, seen &middot; started 2026<br>
-      made by a 16-year-old who was tired of being ignored
+      <b>Banyan</b> &middot; young makers in India, seen &middot; started 2026<br>
+      made by a 16-year-old who was tired of building in the dark
     </footer>
   </div>
 
 <script>
-// One array. Add a builder = add an object. That's the whole CMS.
-const BUILDERS = [
+// ─── The whole CMS. Add a maker = add one object. ───
+// crafts: any of Code, Design, Video, Writing, Music, Other (add new ones freely)
+// reach:  optional — only show a contact link the maker agreed to share
+const MAKERS = [
   {
     name: "Gokul Sai",
-    meta: "16 · Hyderabad · self-taught ML",
+    meta: "16 · Hyderabad",
+    crafts: ["Code"],
     blurb: "Builds honest tools — ones that admit what they don't know. Reproduced an IIIT-Hyderabad research paper and co-authored one.",
     ships: [
       {label: "reflex", url: "https://github.com/VGokulsai/reflex"},
@@ -118,62 +189,102 @@ const BUILDERS = [
       {label: "chess-coach", url: "https://github.com/VGokulsai/chess-coach"},
       {label: "paper reproduction", url: "https://github.com/VGokulsai/nllb-entity-mt"},
       {label: "falsezero (paper)", url: "https://github.com/VGokulsai/falsezero"}
-    ]
+    ],
+    reach: {label: "Email", url: "mailto:gokulsai1004@gmail.com"}
   }
-  // next builder goes here → { name, meta, blurb, ships:[{label,url}] }
+  // next maker → { name, meta, crafts:[...], blurb, ships:[{label,url}], reach:{label,url} }
 ];
 
-// where "Submit your build" points — Gokul: swap this for your Google Form / email link.
-const SUBMIT_URL = "mailto:gokulsai1004@gmail.com?subject=My build for Banyan";
+// Where "Submit your work" points. Swap for the Google Form link once it exists.
+const SUBMIT_URL = "mailto:gokulsai1004@gmail.com?subject=My work for Banyan";
 
-const cards = document.getElementById("cards");
-BUILDERS.forEach(b => {
-  const el = document.createElement("div");
-  el.className = "card";
-  const ships = b.ships.map(s =>
-    `<a class="ship" href="${s.url}" target="_blank" rel="noopener">${s.label}<span class="arw">↗</span></a>`
-  ).join("");
+const $ = s => document.querySelector(s);
+const slug = n => n.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove("show"),1600); }
+
+// count
+$("#count").textContent = String(MAKERS.length).padStart(2, "0");
+$("#count-word").textContent = MAKERS.length === 1 ? "maker" : "makers";
+
+// cards
+const cards = $("#cards");
+MAKERS.forEach(m => {
+  const id = slug(m.name);
+  const el = document.createElement("article");
+  el.className = "card"; el.id = id; el.dataset.crafts = m.crafts.join("|");
+  const ships = m.ships.map(s => `<a class="ship" href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}<span class="arw">↗</span></a>`).join("");
+  const crafts = m.crafts.map(c => `<span class="craft">${esc(c)}</span>`).join("");
+  const reach = m.reach ? `<div class="reach">Want to work with ${esc(m.name.split(" ")[0])}? <a href="${esc(m.reach.url)}" target="_blank" rel="noopener">${esc(m.reach.label)} →</a></div>` : "";
   el.innerHTML =
-    `<div class="name">${b.name}</div>` +
-    `<div class="meta">${b.meta}</div>` +
-    `<div class="blurb">${b.blurb}</div>` +
-    `<div class="ships">${ships}</div>`;
+    `<div class="top"><div><div class="name">${esc(m.name)}</div><div class="meta">${esc(m.meta)}</div><div class="crafts">${crafts}</div></div>` +
+    `<button class="share" data-id="${id}" aria-label="Copy link to ${esc(m.name)}">🔗 link</button></div>` +
+    `<div class="blurb">${esc(m.blurb)}</div><div class="ships">${ships}</div>${reach}`;
   cards.appendChild(el);
 });
-// the open invitation, always last
 const open = document.createElement("div");
 open.className = "card open";
-open.innerHTML = `<div class="name">This spot is yours.</div><p>Building something in India and no one's looking? This is the spot.</p>`;
+open.innerHTML = `<div class="name">This spot is yours.</div><p>Making things in India and no one's looking? <a href="#join">Get on Banyan →</a></p>`;
 cards.appendChild(open);
 
-document.getElementById("submit").href = SUBMIT_URL;
+// share a maker's own link
+cards.addEventListener("click", e => {
+  const b = e.target.closest(".share"); if (!b) return;
+  const url = location.origin + location.pathname + "#" + b.dataset.id;
+  const done = () => toast("Link copied — share it anywhere");
+  if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, () => prompt("Copy this link:", url));
+  else prompt("Copy this link:", url);
+});
 
-// Matt-style scroll reveal — fade + rise as each piece enters view, lightly staggered.
-// Progressive enhancement: if the observer isn't supported or never fires, content still shows.
-const supportsIO = "IntersectionObserver" in window;
-const io = supportsIO ? new IntersectionObserver((es) => {
+// craft filter — only crafts that actually have makers (no empty shelves)
+const counts = {};
+MAKERS.forEach(m => m.crafts.forEach(c => counts[c] = (counts[c] || 0) + 1));
+const chips = $("#chips");
+function chip(label, n){ const b=document.createElement("button"); b.className="chip"; b.dataset.craft=label; b.innerHTML=`${esc(label)}<span>${n}</span>`; chips.appendChild(b); return b; }
+chip("All", MAKERS.length).classList.add("on");
+Object.keys(counts).sort().forEach(c => chip(c, counts[c]));
+function filterTo(craft){
+  chips.querySelectorAll(".chip").forEach(c => c.classList.toggle("on", c.dataset.craft === craft));
+  cards.querySelectorAll(".card:not(.open)").forEach(c => { c.hidden = craft !== "All" && !c.dataset.crafts.split("|").includes(craft); });
+}
+chips.addEventListener("click", e => { const c = e.target.closest(".chip"); if (c) filterTo(c.dataset.craft); });
+
+$("#submit").href = SUBMIT_URL;
+
+// restrained scroll reveal — progressive enhancement, never leaves content hidden
+const io = "IntersectionObserver" in window ? new IntersectionObserver(es => {
   es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
 }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }) : null;
-function reveal(el, delay = 0) {
-  if (!el) return;
-  el.classList.add("reveal");
-  if (delay) el.style.transitionDelay = delay + "ms";
-  if (io) io.observe(el); else el.classList.add("in");
-}
-[document.querySelector("h1"), document.querySelector(".tagline"), document.querySelector(".sec-h")]
-  .forEach((el, i) => reveal(el, i * 80));
-[...document.querySelectorAll("#cards .card")].forEach((el, i) => reveal(el, i * 90));
-reveal(document.querySelector(".cta"));
-reveal(document.querySelector("footer"));
-// safety net: nothing ever stays hidden if the observer misses
+function reveal(el, d = 0){ if (!el) return; el.classList.add("reveal"); if (d) el.style.transitionDelay = d + "ms"; io ? io.observe(el) : el.classList.add("in"); }
+["h1", ".tagline", ".count"].forEach((s, i) => reveal($(s), i * 80));
+document.querySelectorAll(".sec-h, .chips, #cards .card, .block p, .step, .cta, footer").forEach((el, i) => reveal(el, (i % 4) * 70));
 setTimeout(() => document.querySelectorAll(".reveal:not(.in)").forEach(el => el.classList.add("in")), 2500);
 
-// self-check: banyan.html?check
+// open a maker's link: #their-name → scroll + highlight
+function goToHash(){
+  const id = decodeURIComponent(location.hash.slice(1)); if (!id) return;
+  const card = document.getElementById(id); if (!card || !card.classList.contains("card")) return;
+  filterTo("All"); card.classList.add("in");
+  card.scrollIntoView({ behavior: "smooth", block: "center" });
+  card.classList.add("flash"); setTimeout(() => card.classList.remove("flash"), 2200);
+}
+window.addEventListener("hashchange", goToHash);
+goToHash();
+
+// self-check: index.html?check
 if (location.search.includes("check")) {
-  const ok = document.querySelectorAll("#cards .card").length === BUILDERS.length + 1
-          && document.getElementById("submit").getAttribute("href") === SUBMIT_URL;
-  document.title = ok ? "OK" : "FAIL";
-  console.log(ok ? "banyan: renders builders + open spot" : "banyan FAILED");
+  const results = [
+    ["one card per maker + open spot", cards.querySelectorAll(".card").length === MAKERS.length + 1],
+    ["every maker card has its slug id", MAKERS.every(m => document.getElementById(slug(m.name)))],
+    ["slug is url-safe", slug("Priya Rao-Sharma!") === "priya-rao-sharma"],
+    ["filter hides non-matching", (() => { filterTo("__none__"); const hid = [...cards.querySelectorAll(".card:not(.open)")].every(c => c.hidden); filterTo("All"); return hid; })()],
+    ["escapes html", esc("<b>") === "&lt;b&gt;"],
+    ["submit wired", $("#submit").getAttribute("href") === SUBMIT_URL]
+  ];
+  const fails = results.filter(r => !r[1]).map(r => r[0]);
+  document.title = fails.length ? "FAIL " + fails.join(", ") : "OK";
+  console.log("banyan self-check:", results);
 }
 </script>
 </body>
