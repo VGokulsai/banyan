@@ -3,118 +3,149 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Banyan</title>
-<meta name="description" content="Young makers in India, seen. Code, design, video, writing — judged on what you've shipped, not your credentials.">
-<meta property="og:title" content="Banyan — young makers in India, seen">
-<meta property="og:description" content="Proof, not pedigree. A showcase of young makers in India and the work they've shipped.">
+<title>Banyan — young makers in India, seen</title>
+<meta name="description" content="Young makers in India, seen. Code, design, video, writing, music — judged on what you've shipped, not your credentials.">
+<meta name="theme-color" content="#F6F1E7">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://vgokulsai.github.io/banyan/">
+<meta property="og:title" content="Banyan — young makers in India, seen">
+<meta property="og:description" content="Proof, not pedigree. Young makers in India and the work they've actually shipped.">
+<meta property="og:image" content="https://vgokulsai.github.io/banyan/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://vgokulsai.github.io/banyan/og.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23F6F1E7'/%3E%3Ccircle cx='16' cy='12' r='8' fill='%232F5D46'/%3E%3Cpath d='M16 14v13M16 21l-5 6M16 21l5 6' stroke='%232F5D46' stroke-width='2.4' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   /* Banyan: warm, rooted, editorial. Cream, ink, one green. Nothing else. */
   :root{
-    --bg:#F6F1E7; --card:#FFFDF7; --ink:#20261F; --muted:#6E756A;
-    --green:#2F5D46; --leaf:#5C9C79; --line:#E6DECC;
+    --bg:#F6F1E7; --card:#FFFDF7; --ink:#20261F; --muted:#5F665B;
+    --green:#2F5D46; --leaf:#3F7A5A; --line:#E6DECC; --edge:rgba(47,93,70,.3);
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{margin:0;background:var(--bg);color:var(--ink);
     font:17px/1.6 "Instrument Sans","Segoe UI",system-ui,sans-serif;
     -webkit-font-smoothing:antialiased;display:flex;justify-content:center}
-  .wrap{width:100%;max-width:760px;padding:40px 20px 80px}
-  .mono{font-family:"JetBrains Mono",ui-monospace,monospace;text-transform:uppercase;letter-spacing:.1em;font-size:.7rem;color:var(--muted)}
+  .wrap{width:100%;max-width:760px;padding:36px 20px 80px}
+  .mono,.sec-h h2{font-family:"JetBrains Mono",ui-monospace,monospace;text-transform:uppercase;letter-spacing:.1em;font-size:.7rem;font-weight:400;color:var(--muted);margin:0}
   a{color:inherit}
+  button{font:inherit}
 
   /* header */
   header{display:flex;align-items:center;justify-content:space-between;gap:12px}
-  .brand{display:flex;align-items:baseline;gap:9px;text-decoration:none}
-  .leaf{font-size:1.3rem}
+  .brand{display:flex;align-items:center;gap:9px;text-decoration:none}
+  .logo{width:26px;height:26px;flex:none}
   .mark{font-family:"Instrument Serif",Georgia,serif;font-size:2rem;line-height:1;color:var(--green)}
-  nav{display:flex;gap:16px}
-  nav a{font-family:"JetBrains Mono",monospace;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);text-decoration:none}
+  nav{display:flex;gap:6px}
+  nav a{font-family:"JetBrains Mono",monospace;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);text-decoration:none;padding:12px 6px}
   nav a:hover{color:var(--green)}
 
   /* hero */
-  h1{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:clamp(2.6rem,7.5vw,4.2rem);
-    line-height:1.03;letter-spacing:-.01em;margin:34px 0 0}
+  h1{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:clamp(2.7rem,8vw,4.6rem);
+    line-height:1.02;letter-spacing:-.01em;margin:30px 0 0}
   h1 em{font-style:italic;color:var(--green)}
   .tagline{color:var(--muted);font-size:1.12rem;margin:16px 0 0;max-width:52ch}
   .tagline b{color:var(--ink);font-weight:600}
-  .count{display:flex;align-items:baseline;gap:14px;margin-top:30px;padding-top:22px;border-top:1px solid var(--line)}
-  .count .n{font-family:"Instrument Serif",Georgia,serif;font-size:4.2rem;line-height:.8;color:var(--green);font-variant-numeric:tabular-nums}
-  .count .t{color:var(--muted);font-size:.95rem;line-height:1.35}
-  .count .t b{color:var(--ink);font-weight:600}
+  .stamp{margin-top:22px;display:flex;gap:14px;flex-wrap:wrap}
+  .stamp b{color:var(--green);font-weight:500}
 
-  /* section head */
-  .sec{margin-top:56px;scroll-margin-top:20px}
+  /* sections */
+  .sec{margin-top:56px;scroll-margin-top:16px}
   .sec-h{display:flex;align-items:center;gap:12px;margin-bottom:18px}
   .sec-h .line{flex:1;height:1px;background:var(--line)}
 
-  /* craft filter */
+  /* craft filter — only appears once there are 2+ crafts */
   .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
-  .chip{font-family:"JetBrains Mono",monospace;font-size:.74rem;letter-spacing:.04em;cursor:pointer;
-    padding:.4rem .85rem;border-radius:999px;border:1px solid var(--line);background:none;color:var(--muted);transition:all .15s}
+  .chips[hidden]{display:none}
+  .chip{font-family:"JetBrains Mono",monospace;font-size:.74rem;letter-spacing:.04em;cursor:pointer;min-height:36px;
+    padding:.4rem .9rem;border-radius:999px;border:1px solid var(--line);background:none;color:var(--muted);transition:all .15s}
   .chip:hover{border-color:var(--leaf);color:var(--green)}
   .chip.on{background:var(--green);border-color:var(--green);color:var(--bg)}
-  .chip span{opacity:.6;margin-left:4px}
+  .chip span{opacity:.65;margin-left:4px}
 
-  /* builder cards */
+  .viewing{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;
+    font-size:.88rem;color:var(--muted);border:1px solid var(--edge);border-radius:12px;padding:.6rem .9rem}
+  .viewing[hidden]{display:none}
+  .viewing button{background:none;border:0;color:var(--green);font-weight:600;cursor:pointer;padding:6px 0}
+
+  /* maker cards */
   .cards{display:flex;flex-direction:column;gap:16px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;scroll-margin-top:20px;
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;scroll-margin-top:16px;
     transition:box-shadow .4s,border-color .4s}
   .card[hidden]{display:none}
-  .card.flash{border-color:var(--leaf);box-shadow:0 0 0 4px rgba(92,156,121,.22)}
-  .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-  .card .name{font-family:"Instrument Serif",Georgia,serif;font-size:1.55rem;line-height:1.1}
-  .card .meta{font-family:"JetBrains Mono",monospace;font-size:.72rem;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.06em}
-  .crafts{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .card.flash{border-color:var(--leaf);box-shadow:0 0 0 4px rgba(63,122,90,.2)}
+  .no{font-family:"JetBrains Mono",monospace;font-size:.7rem;color:var(--leaf);letter-spacing:.08em}
+  .card h3{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:1.7rem;line-height:1.1;margin:2px 0 0}
+  .card .meta{font-family:"JetBrains Mono",monospace;font-size:.72rem;color:var(--muted);margin-top:5px;text-transform:uppercase;letter-spacing:.06em}
+  .crafts{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
   .craft{font-family:"JetBrains Mono",monospace;font-size:.66rem;text-transform:uppercase;letter-spacing:.07em;
-    color:var(--green);border:1px solid rgba(47,93,70,.25);border-radius:4px;padding:.12rem .4rem}
-  .share{flex:none;font-family:"JetBrains Mono",monospace;font-size:.7rem;color:var(--muted);background:none;
-    border:1px solid var(--line);border-radius:999px;padding:.3rem .65rem;cursor:pointer;transition:all .15s}
-  .share:hover{color:var(--green);border-color:var(--leaf)}
-  .card .blurb{margin:12px 0 14px}
-  .ships{display:flex;flex-wrap:wrap;gap:8px}
-  .ship{display:inline-flex;align-items:center;gap:6px;text-decoration:none;
-    font-family:"JetBrains Mono",monospace;font-size:.8rem;color:var(--green);
-    background:rgba(47,93,70,.07);border:1px solid rgba(47,93,70,.18);border-radius:999px;padding:.35rem .75rem;transition:background .15s,transform .1s}
-  .ship:hover{background:rgba(47,93,70,.14)} .ship:active{transform:scale(.97)}
-  .ship .arw{color:var(--leaf)}
-  .reach{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);font-size:.88rem;color:var(--muted)}
-  .reach a{color:var(--green);font-weight:600;text-decoration:none;border-bottom:1px solid rgba(47,93,70,.3)}
-  .card.open{background:none;border-style:dashed;text-align:center;color:var(--muted)}
-  .card.open .name{color:var(--green)}
-  .card.open p{margin:.5rem 0 0}
-  .card.open a{color:var(--green);font-weight:600}
+    color:var(--green);border:1px solid var(--edge);border-radius:4px;padding:.12rem .4rem}
+  .card .blurb{margin:14px 0 6px}
+  /* the work, as a ledger */
+  .ships{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+  .ships li{border-bottom:1px solid var(--line)}
+  .ships a{display:grid;grid-template-columns:minmax(96px,auto) 1fr auto;gap:14px;align-items:baseline;
+    min-height:46px;padding:11px 2px;text-decoration:none;transition:background .15s}
+  .ships a:hover{background:rgba(47,93,70,.05)}
+  .ships .lbl{font-family:"JetBrains Mono",monospace;font-size:.82rem;color:var(--green)}
+  .ships .what{font-size:.93rem;color:var(--ink)}
+  .ships .arw{color:var(--leaf)}
+  .open{margin-top:14px;font-family:"JetBrains Mono",monospace;font-size:.72rem;letter-spacing:.05em;color:var(--muted);text-transform:uppercase}
+  .open b{color:var(--green);font-weight:500}
+  .reach{margin-top:8px;font-size:.9rem;color:var(--muted)}
+  .reach a{color:var(--green);font-weight:600;text-decoration:none;border-bottom:1px solid var(--edge)}
+  .actions{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+  .act{display:inline-flex;align-items:center;gap:7px;min-height:40px;font-family:"JetBrains Mono",monospace;font-size:.74rem;
+    color:var(--green);background:none;border:1px solid var(--edge);border-radius:999px;padding:.45rem .95rem;cursor:pointer;transition:all .15s}
+  .act:hover{background:rgba(47,93,70,.07)}
+  .act svg{width:14px;height:14px}
+  .card.open-spot{background:none;border:1px dashed var(--edge);text-align:center;color:var(--muted)}
+  .card.open-spot h3{color:var(--green)}
+  .card.open-spot p{margin:.5rem 0 0}
+  .card.open-spot a,.card.open-spot button{color:var(--green);font-weight:600}
+  .card.open-spot button{background:none;border:0;cursor:pointer;padding:6px 0;text-decoration:underline;text-underline-offset:3px}
 
   /* editorial blocks */
-  .block p{margin:.4rem 0 0;color:var(--ink)}
+  .block p{margin:.4rem 0 0}
   .block .muted{color:var(--muted)}
-  .steps{display:flex;flex-direction:column;gap:0;margin-top:6px}
+  .steps{margin-top:6px}
   .step{display:grid;grid-template-columns:52px 1fr;gap:10px;padding:16px 0;border-bottom:1px solid var(--line)}
   .step:last-child{border-bottom:0}
-  .step .no{font-family:"Instrument Serif",Georgia,serif;font-size:1.9rem;line-height:1;color:var(--leaf)}
+  .step .num{font-family:"Instrument Serif",Georgia,serif;font-size:1.9rem;line-height:1;color:var(--leaf)}
   .step b{display:block;font-weight:600}
   .step span{color:var(--muted);font-size:.95rem}
+  .promise{margin:18px 0 0;padding:16px 18px;list-style:none;border:1px solid var(--edge);border-radius:14px}
+  .promise li{padding:4px 0 4px 22px;position:relative;font-size:.95rem}
+  .promise li::before{content:"";position:absolute;left:2px;top:.72em;width:9px;height:9px;border-radius:50%;background:var(--leaf)}
 
   /* CTA */
-  .cta{margin-top:30px;background:var(--green);color:var(--bg);border-radius:18px;padding:28px 24px;text-align:center}
-  .cta h3{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:1.7rem;margin:0}
-  .cta p{margin:.5rem auto 18px;max-width:42ch;opacity:.85}
+  .cta{margin-top:26px;background:var(--green);color:var(--bg);border-radius:18px;padding:28px 24px;text-align:center}
+  .cta h3{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:1.8rem;margin:0}
+  .cta p{margin:.5rem auto 18px;max-width:42ch;color:var(--bg);opacity:.85}
   .cta a{display:inline-block;text-decoration:none;font-family:"JetBrains Mono",monospace;font-weight:600;
     text-transform:uppercase;letter-spacing:.06em;font-size:.8rem;background:var(--bg);color:var(--green);
-    border-radius:999px;padding:.75rem 1.4rem;transition:transform .1s}
+    border-radius:999px;padding:.8rem 1.5rem;transition:transform .1s}
   .cta a:active{transform:scale(.96)}
 
-  footer{margin-top:44px;color:var(--muted);font-family:"JetBrains Mono",monospace;font-size:.72rem;letter-spacing:.05em;text-align:center;line-height:1.7}
+  footer{margin-top:44px;color:var(--muted);font-family:"JetBrains Mono",monospace;font-size:.72rem;letter-spacing:.05em;text-align:center;line-height:1.8}
   footer b{color:var(--green)}
+  .nw{white-space:nowrap}
 
-  /* toast */
   .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(90px);opacity:0;
     background:var(--ink);color:var(--bg);font-family:"JetBrains Mono",monospace;font-size:.8rem;
     padding:.55rem 1.1rem;border-radius:999px;transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .3s;z-index:9}
   .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+  @media (max-width:480px){
+    .ships a{grid-template-columns:1fr auto;gap:2px 10px}
+    .ships .what{grid-column:1;grid-row:2}
+    .ships .arw{grid-row:1/3;grid-column:2;align-self:center}
+    nav a{padding:12px 4px}
+  }
 
   /* restrained scroll reveal, off for reduced-motion */
   @media (prefers-reduced-motion: no-preference){
@@ -125,130 +156,229 @@
 </style>
 </head>
 <body>
-  <div class="toast" id="toast"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <div class="wrap">
     <header>
-      <a class="brand" href="#"><span class="leaf">🌳</span><span class="mark">Banyan</span></a>
+      <a class="brand" href="#" aria-label="Banyan home">
+        <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="12" r="8" fill="#2F5D46"/><path d="M16 14v13M16 21l-5 6M16 21l5 6" stroke="#2F5D46" stroke-width="2.4" stroke-linecap="round" fill="none"/></svg>
+        <span class="mark">Banyan</span>
+      </a>
       <nav><a href="#makers">Makers</a><a href="#hiring">Hiring</a><a href="#join">Join</a></nav>
     </header>
 
     <h1>Young makers in India, <em>seen.</em></h1>
     <p class="tagline"><b>Proof, not pedigree.</b> A place for the kids building real things in India and getting ignored for it — so the next one doesn't build alone.</p>
+    <p class="stamp mono"><span><b id="count">0</b> <span id="count-word">makers</span></span><span>updated <b id="updated">—</b></span></p>
 
-    <div class="count">
-      <div class="n" id="count">0</div>
-      <div class="t"><b id="count-word">makers</b> on Banyan so far.<br>You could be next.</div>
-    </div>
-
-    <div class="sec" id="makers">
-      <div class="sec-h"><span class="mono">The makers</span><span class="line"></span></div>
-      <div class="chips" id="chips"></div>
+    <section class="sec" id="makers">
+      <div class="sec-h"><h2>The makers</h2><span class="line"></span></div>
+      <div class="chips" id="chips" hidden></div>
+      <div class="viewing" id="viewing" hidden><span id="viewing-text"></span><button type="button" id="see-all">See everyone ↑</button></div>
       <div class="cards" id="cards"></div>
-    </div>
+    </section>
 
-    <div class="sec block" id="hiring">
-      <div class="sec-h"><span class="mono">Looking for talent?</span><span class="line"></span></div>
-      <p>Everyone here has <b>shipped something real</b> — code, design, video, writing. Filter by craft, open their work, and reach out through the link <i>they</i> chose.</p>
+    <section class="sec block" id="hiring">
+      <div class="sec-h"><h2>Looking for talent?</h2><span class="line"></span></div>
+      <p>Every maker here links to work you can open right now. Reach them through the contact they chose to share.</p>
       <p class="muted">No résumés, no marks. Just the work.</p>
-    </div>
+    </section>
 
-    <div class="sec block" id="join">
-      <div class="sec-h"><span class="mono">Get on Banyan</span><span class="line"></span></div>
+    <section class="sec block" id="join">
+      <div class="sec-h"><h2>Get on Banyan</h2><span class="line"></span></div>
       <p>Code, design, video editing, writing, music — if you made it and it's out in the world, it counts.</p>
       <div class="steps">
-        <div class="step"><div class="no">01</div><div><b>Send your work</b><span>Fill the short form: who you are, your craft, and links to what you've shipped.</span></div></div>
-        <div class="step"><div class="no">02</div><div><b>A real person looks at it</b><span>Every submission is read by hand. The only bar: it's real and it's yours.</span></div></div>
-        <div class="step"><div class="no">03</div><div><b>You go live, with your own link</b><span>You get a page spot you can share anywhere — bios, applications, DMs.</span></div></div>
+        <div class="step"><div class="num">01</div><div><b>Send your work</b><span>Fill the short form: who you are, your craft, and links to what you've shipped.</span></div></div>
+        <div class="step"><div class="num">02</div><div><b>A real person looks at it</b><span>Every submission is read by hand. The only bar: it's real and it's yours. Real means a stranger can open it — a live link, a repo, a video, a published piece. School projects count if they're public.</span></div></div>
+        <div class="step"><div class="num">03</div><div><b>You go live, with your own link</b><span>You get banyan/#your-name — put it in your bio, your applications, your DMs.</span></div></div>
       </div>
+      <ul class="promise">
+        <li>You see and approve your card before it goes live.</li>
+        <li>Share only the contact you want. No phone numbers, ever.</li>
+        <li>Want off? One message and it's gone within a day.</li>
+      </ul>
       <div class="cta">
         <h3>Made something? Get it seen.</h3>
         <p>No degree, no connections, no fee. Just proof.</p>
-        <a id="submit" href="#">Submit your work →</a>
+        <a id="submit" href="#" target="_blank" rel="noopener">Submit your work →</a>
       </div>
-    </div>
+    </section>
 
     <footer>
-      <b>Banyan</b> &middot; young makers in India, seen &middot; started 2026<br>
-      made by a 16-year-old who was tired of building in the dark
+      <b>Banyan</b> &middot; young makers in India, seen<br>
+      <span class="nw">started Sep 2026</span> by a maker in Hyderabad who was tired of building in the dark
     </footer>
   </div>
 
 <script>
 // ─── The whole CMS. Add a maker = add one object. ───
-// crafts: any of Code, Design, Video, Writing, Music, Other (add new ones freely)
-// reach:  optional — only show a contact link the maker agreed to share
+// crafts: Code, Design, Video, Writing, Music, Other (add new ones freely)
+// added:  "YYYY-MM" the month they joined — numbers and "updated" come from this, never typed
+// age:    optional, shown as "age N at joining" so it never goes stale
+// open:   optional — what they're open to (only what they said)
+// reach:  optional — only a contact link the maker chose to share
 const MAKERS = [
   {
     name: "Gokul Sai",
-    meta: "16 · Hyderabad",
+    city: "Hyderabad",
+    age: 16,
+    added: "2026-09",
     crafts: ["Code"],
-    blurb: "Builds honest tools — ones that admit what they don't know. Reproduced an IIIT-Hyderabad research paper and co-authored one.",
+    blurb: "Builds honest tools — ones that admit what they don't know.",
     ships: [
-      {label: "reflex", url: "https://github.com/VGokulsai/reflex"},
-      {label: "casefire", url: "https://vgokulsai.github.io/casefire/"},
-      {label: "chess-coach", url: "https://github.com/VGokulsai/chess-coach"},
-      {label: "paper reproduction", url: "https://github.com/VGokulsai/nllb-entity-mt"},
-      {label: "falsezero (paper)", url: "https://github.com/VGokulsai/falsezero"}
+      {label: "reflex", what: "Checks every line of your math working, exactly — and says when it can't.", url: "https://github.com/VGokulsai/reflex"},
+      {label: "casefire", what: "A timed debate-prep drill with a streak. Steelman the other side or lose it.", url: "https://vgokulsai.github.io/casefire/"},
+      {label: "chess-coach", what: "Stockfish plays you; a local AI explains your mistakes in plain words.", url: "https://github.com/VGokulsai/chess-coach"},
+      {label: "nllb-entity-mt", what: "Reproduced an IIIT-Hyderabad SemEval-2025 paper: +5 BLEU with LoRA.", url: "https://github.com/VGokulsai/nllb-entity-mt"},
+      {label: "falsezero", what: "Co-authored paper (preprint on GitHub): why web-reading AI needs four answers, not two.", url: "https://github.com/VGokulsai/falsezero"}
     ],
+    open: ["research", "startup work", "collabs"],
     reach: {label: "Email", url: "mailto:gokulsai1004@gmail.com"}
   }
-  // next maker → { name, meta, crafts:[...], blurb, ships:[{label,url}], reach:{label,url} }
+  // next maker → { name, city, age?, added:"YYYY-MM", crafts:[...], blurb, ships:[{label,what,url}], open?:[...], reach?:{label,url} }
 ];
 
-// Where "Submit your work" points. Swap for the Google Form link once it exists.
-const SUBMIT_URL = "mailto:gokulsai1004@gmail.com?subject=My work for Banyan";
+const SUBMIT_URL = "https://docs.google.com/forms/d/e/1FAIpQLScYGmn1AkW9NnL4a9pIXy7HM5-rfDJAbnCHgKPYomhOJISxbw/viewform";
+const SITE = "https://vgokulsai.github.io/banyan/";
 
 const $ = s => document.querySelector(s);
 const slug = n => n.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pad3 = n => String(n).padStart(3, "0");
+const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const fmtMonth = ym => { const [y, m] = ym.split("-").map(Number); return MONTHS[m - 1] + " " + y; };
+const metaLine = m => [m.city, "joined " + fmtMonth(m.added) + (m.age ? ", age " + m.age : "")].filter(Boolean).join(" · ");
+const ICON_SHARE = `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 10V2M5 5l3-3 3 3M3 9v4h10V9" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const ICON_CARD = `<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="1.5" width="10" height="13" rx="2" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M6 11h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`;
 
-function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove("show"),1600); }
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove("show"),1800); }
 
-// count
-$("#count").textContent = String(MAKERS.length).padStart(2, "0");
+// numbering: by join order (oldest = No. 001); display newest first
+const byJoin = [...MAKERS].sort((a, b) => a.added.localeCompare(b.added));
+byJoin.forEach((m, i) => m.no = i + 1);
+const display = [...byJoin].reverse();
+
+// the stamp — derived, never typed
+$("#count").textContent = MAKERS.length;
 $("#count-word").textContent = MAKERS.length === 1 ? "maker" : "makers";
+$("#updated").textContent = byJoin.length ? fmtMonth(byJoin[byJoin.length - 1].added) : "—";
 
 // cards
 const cards = $("#cards");
-MAKERS.forEach(m => {
-  const id = slug(m.name);
+display.forEach(m => {
+  const id = slug(m.name), first = esc(m.name.split(" ")[0]);
   const el = document.createElement("article");
   el.className = "card"; el.id = id; el.dataset.crafts = m.crafts.join("|");
-  const ships = m.ships.map(s => `<a class="ship" href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}<span class="arw">↗</span></a>`).join("");
-  const crafts = m.crafts.map(c => `<span class="craft">${esc(c)}</span>`).join("");
-  const reach = m.reach ? `<div class="reach">Want to work with ${esc(m.name.split(" ")[0])}? <a href="${esc(m.reach.url)}" target="_blank" rel="noopener">${esc(m.reach.label)} →</a></div>` : "";
+  const ships = m.ships.map(s =>
+    `<li><a href="${esc(s.url)}" target="_blank" rel="noopener"><span class="lbl">${esc(s.label)}</span><span class="what">${esc(s.what || "")}</span><span class="arw">↗</span></a></li>`).join("");
   el.innerHTML =
-    `<div class="top"><div><div class="name">${esc(m.name)}</div><div class="meta">${esc(m.meta)}</div><div class="crafts">${crafts}</div></div>` +
-    `<button class="share" data-id="${id}" aria-label="Copy link to ${esc(m.name)}">🔗 link</button></div>` +
-    `<div class="blurb">${esc(m.blurb)}</div><div class="ships">${ships}</div>${reach}`;
+    `<div class="no">No. ${pad3(m.no)}</div>` +
+    `<h3>${esc(m.name)}</h3>` +
+    `<div class="meta">${esc(metaLine(m))}</div>` +
+    `<div class="crafts">${m.crafts.map(c => `<span class="craft">${esc(c)}</span>`).join("")}</div>` +
+    `<p class="blurb">${esc(m.blurb)}</p>` +
+    `<ul class="ships">${ships}</ul>` +
+    (m.open && m.open.length ? `<div class="open">Open to: <b>${m.open.map(esc).join(" · ")}</b></div>` : "") +
+    (m.reach ? `<div class="reach">Want to work with ${first}? <a href="${esc(m.reach.url)}" target="_blank" rel="noopener">${esc(m.reach.label)} →</a></div>` : "") +
+    `<div class="actions"><button type="button" class="act" data-share="${id}">${ICON_SHARE}Share</button>` +
+    `<button type="button" class="act" data-card="${id}">${ICON_CARD}Get your card</button></div>`;
   cards.appendChild(el);
 });
-const open = document.createElement("div");
-open.className = "card open";
-open.innerHTML = `<div class="name">This spot is yours.</div><p>Making things in India and no one's looking? <a href="#join">Get on Banyan →</a></p>`;
-cards.appendChild(open);
+const openSpot = document.createElement("div");
+openSpot.className = "card open-spot";
+openSpot.innerHTML = `<h3>Maker No. ${pad3(MAKERS.length + 1)} is still open.</h3>` +
+  `<p>Making things in India and no one's looking? <a href="#join">Get on Banyan →</a></p>` +
+  `<p>Know someone who should be here? <button type="button" id="send-page">Send them this page</button></p>`;
+cards.appendChild(openSpot);
 
-// share a maker's own link
+// share: phone share sheet first, copy link as fallback
+async function shareUrl(url, title){
+  if (navigator.share) { try { await navigator.share({ title, url }); return; } catch (e) { if (e.name === "AbortError") return; } }
+  try { await navigator.clipboard.writeText(url); toast("Link copied — share it anywhere"); }
+  catch { prompt("Copy this link:", url); }
+}
+
+// "Get your card": a 1080×1350 image drawn in the browser, ready for a story
+async function makeCard(m){
+  if (document.fonts) {
+    await Promise.all(['96px "Instrument Serif"', 'italic 48px "Instrument Serif"', '30px "JetBrains Mono"', '34px "Instrument Sans"'].map(f => document.fonts.load(f)));
+  }
+  const W = 1080, H = 1350, c = document.createElement("canvas");
+  c.width = W; c.height = H;
+  const x = c.getContext("2d"), G = "#2F5D46", INK = "#20261F", MUT = "#5F665B", L = 96, R = W - 96;
+  const fit = (t, max) => { if (x.measureText(t).width <= max) return t; while (t.length && x.measureText(t + "…").width > max) t = t.slice(0, -1); return t + "…"; };
+  x.fillStyle = "#F6F1E7"; x.fillRect(0, 0, W, H);
+  x.strokeStyle = "rgba(47,93,70,.3)"; x.lineWidth = 2; x.strokeRect(40, 40, W - 80, H - 80);
+  // mark
+  x.fillStyle = G; x.beginPath(); x.arc(L + 20, 148, 20, 0, Math.PI * 2); x.fill();
+  x.strokeStyle = G; x.lineWidth = 6; x.lineCap = "round"; x.beginPath();
+  x.moveTo(L + 20, 152); x.lineTo(L + 20, 186); x.moveTo(L + 20, 172); x.lineTo(L + 8, 188); x.moveTo(L + 20, 172); x.lineTo(L + 32, 188); x.stroke();
+  x.font = '56px "Instrument Serif"'; x.fillStyle = G; x.fillText("Banyan", L + 58, 172);
+  x.font = '28px "JetBrains Mono"'; x.fillStyle = "#3F7A5A"; x.textAlign = "right"; x.fillText("No. " + pad3(m.no), R, 168); x.textAlign = "left";
+  // name, wrapped to two lines
+  x.font = '124px "Instrument Serif"'; x.fillStyle = INK;
+  const words = m.name.split(" "); let line = "", lines = [];
+  words.forEach(w => { const t = line ? line + " " + w : w; if (x.measureText(t).width > R - L && line) { lines.push(line); line = w; } else line = t; });
+  lines.push(line); lines = lines.slice(0, 2);
+  let y = 400; lines.forEach(t => { x.fillText(fit(t, R - L), L, y); y += 128; });
+  x.font = '28px "JetBrains Mono"'; x.fillStyle = MUT; x.fillText(fit(metaLine(m).toUpperCase(), R - L), L, y - 50);
+  x.fillStyle = G; x.fillText(fit(m.crafts.join(" · ").toUpperCase(), R - L), L, y);
+  // work
+  y += 50; x.fillStyle = "#E6DECC"; x.fillRect(L, y, R - L, 2);
+  const maxShips = lines.length > 1 ? 2 : 3;   // a long name gets fewer rows, so nothing hits the footer
+  const wrap2 = (t, max) => {           // up to two lines; ellipsis only if it truly overflows two
+    const ws = t.split(" "), out = []; let cur = "";
+    ws.forEach(w => { const n = cur ? cur + " " + w : w; if (x.measureText(n).width > max && cur) { out.push(cur); cur = w; } else cur = n; });
+    out.push(cur);
+    return out.length <= 2 ? out : [out[0], fit(out.slice(1).join(" "), max)];
+  };
+  m.ships.slice(0, maxShips).forEach(s => {
+    y += 64; x.font = '30px "JetBrains Mono"'; x.fillStyle = G; x.fillText(fit(s.label, R - L), L, y);
+    x.font = '30px "Instrument Sans"'; x.fillStyle = INK;
+    const ls = wrap2(s.what || "", R - L);
+    ls.forEach((t, i) => x.fillText(t, L, y + 42 + i * 38));
+    y += 42 + (ls.length - 1) * 38 + 26; x.fillStyle = "#E6DECC"; x.fillRect(L, y, R - L, 2);
+  });
+  c.contentBottom = y;
+  // foot
+  x.font = 'italic 56px "Instrument Serif"'; x.fillStyle = G; x.fillText("Proof, not pedigree.", L, H - 150);
+  x.font = '26px "JetBrains Mono"'; x.fillStyle = MUT; x.fillText(fit(("vgokulsai.github.io/banyan/#" + slug(m.name)), R - L), L, H - 98);
+  return c;
+}
+async function giveCard(m){
+  const c = await makeCard(m);
+  c.toBlob(async blob => {
+    const name = slug(m.name) + "-banyan.png", file = new File([blob], name, { type: "image/png" });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try { await navigator.share({ files: [file], title: m.name + " on Banyan" }); return; } catch (e) { if (e.name === "AbortError") return; }
+    }
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    toast("Card saved — post it to your story");
+  }, "image/png");
+}
+
 cards.addEventListener("click", e => {
-  const b = e.target.closest(".share"); if (!b) return;
-  const url = location.origin + location.pathname + "#" + b.dataset.id;
-  const done = () => toast("Link copied — share it anywhere");
-  if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, () => prompt("Copy this link:", url));
-  else prompt("Copy this link:", url);
+  const s = e.target.closest("[data-share]"), g = e.target.closest("[data-card]");
+  if (s) { const m = MAKERS.find(x => slug(x.name) === s.dataset.share); shareUrl(SITE + "#" + s.dataset.share, m.name + " on Banyan"); }
+  if (g) { const m = MAKERS.find(x => slug(x.name) === g.dataset.card); giveCard(m); }
+  if (e.target.id === "send-page") shareUrl(SITE, "Banyan — young makers in India, seen");
 });
 
-// craft filter — only crafts that actually have makers (no empty shelves)
+// craft filter — only when there are 2+ crafts, so it never pretends
 const counts = {};
 MAKERS.forEach(m => m.crafts.forEach(c => counts[c] = (counts[c] || 0) + 1));
 const chips = $("#chips");
-function chip(label, n){ const b=document.createElement("button"); b.className="chip"; b.dataset.craft=label; b.innerHTML=`${esc(label)}<span>${n}</span>`; chips.appendChild(b); return b; }
-chip("All", MAKERS.length).classList.add("on");
-Object.keys(counts).sort().forEach(c => chip(c, counts[c]));
 function filterTo(craft){
   chips.querySelectorAll(".chip").forEach(c => c.classList.toggle("on", c.dataset.craft === craft));
-  cards.querySelectorAll(".card:not(.open)").forEach(c => { c.hidden = craft !== "All" && !c.dataset.crafts.split("|").includes(craft); });
+  cards.querySelectorAll(".card:not(.open-spot)").forEach(c => { c.hidden = craft !== "All" && !c.dataset.crafts.split("|").includes(craft); });
 }
-chips.addEventListener("click", e => { const c = e.target.closest(".chip"); if (c) filterTo(c.dataset.craft); });
+if (Object.keys(counts).length > 1) {
+  const chip = (label, n) => { const b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.dataset.craft = label; b.innerHTML = `${esc(label)}<span>${n}</span>`; chips.appendChild(b); return b; };
+  chip("All", MAKERS.length).classList.add("on");
+  Object.keys(counts).sort().forEach(c => chip(c, counts[c]));
+  chips.hidden = false;
+  chips.addEventListener("click", e => { const c = e.target.closest(".chip"); if (c) filterTo(c.dataset.craft); });
+}
 
 $("#submit").href = SUBMIT_URL;
 
@@ -257,34 +387,56 @@ const io = "IntersectionObserver" in window ? new IntersectionObserver(es => {
   es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
 }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }) : null;
 function reveal(el, d = 0){ if (!el) return; el.classList.add("reveal"); if (d) el.style.transitionDelay = d + "ms"; io ? io.observe(el) : el.classList.add("in"); }
-["h1", ".tagline", ".count"].forEach((s, i) => reveal($(s), i * 80));
-document.querySelectorAll(".sec-h, .chips, #cards .card, .block p, .step, .cta, footer").forEach((el, i) => reveal(el, (i % 4) * 70));
+["h1", ".tagline", ".stamp"].forEach((s, i) => reveal($(s), i * 80));
+document.querySelectorAll(".sec-h, #cards .card, .block > p, .step, .promise, .cta, footer").forEach((el, i) => reveal(el, (i % 4) * 70));
 setTimeout(() => document.querySelectorAll(".reveal:not(.in)").forEach(el => el.classList.add("in")), 2500);
 
-// open a maker's link: #their-name → scroll + highlight
+// a maker's own link: #their-name → scroll, highlight, and say whose spot this is
 function goToHash(){
-  const id = decodeURIComponent(location.hash.slice(1)); if (!id) return;
-  const card = document.getElementById(id); if (!card || !card.classList.contains("card")) return;
+  const id = decodeURIComponent(location.hash.slice(1));
+  const card = id && document.getElementById(id);
+  if (!card || !card.classList.contains("card")) { $("#viewing").hidden = true; return; }
   filterTo("All"); card.classList.add("in");
+  const m = MAKERS.find(x => slug(x.name) === id);
+  $("#viewing-text").textContent = "You're viewing " + m.name.split(" ")[0] + "'s spot.";
+  $("#viewing").hidden = false;
   card.scrollIntoView({ behavior: "smooth", block: "center" });
   card.classList.add("flash"); setTimeout(() => card.classList.remove("flash"), 2200);
 }
+$("#see-all").addEventListener("click", () => {
+  history.replaceState(null, "", location.pathname + location.search);
+  $("#viewing").hidden = true;
+  $("#makers").scrollIntoView({ behavior: "smooth" });
+});
 window.addEventListener("hashchange", goToHash);
 goToHash();
 
-// self-check: index.html?check
+// self-check: index.html?check  (result in the tab title)
 if (location.search.includes("check")) {
-  const results = [
-    ["one card per maker + open spot", cards.querySelectorAll(".card").length === MAKERS.length + 1],
-    ["every maker card has its slug id", MAKERS.every(m => document.getElementById(slug(m.name)))],
-    ["slug is url-safe", slug("Priya Rao-Sharma!") === "priya-rao-sharma"],
-    ["filter hides non-matching", (() => { filterTo("__none__"); const hid = [...cards.querySelectorAll(".card:not(.open)")].every(c => c.hidden); filterTo("All"); return hid; })()],
-    ["escapes html", esc("<b>") === "&lt;b&gt;"],
-    ["submit wired", $("#submit").getAttribute("href") === SUBMIT_URL]
-  ];
-  const fails = results.filter(r => !r[1]).map(r => r[0]);
-  document.title = fails.length ? "FAIL " + fails.join(", ") : "OK";
-  console.log("banyan self-check:", results);
+  (async () => {
+    const c = await makeCard(MAKERS[0]);
+    const long = "A very long description of a thing someone made that keeps going well past two full lines of text on the card";
+    const worst = await makeCard({ name: "Venkata Subrahmanya Lakshminarayana", city: "Visakhapatnam", age: 17, added: "2026-09", no: 12,
+      crafts: ["Video", "Design", "Music"], ships: [1, 2, 3].map(i => ({ label: "project-" + i, what: long })) });
+    const clear = cv => cv.contentBottom < 1350 - 150 - 56;   // below the "Proof, not pedigree." line
+    const results = [
+      ["one card per maker + open spot", cards.querySelectorAll(".card").length === MAKERS.length + 1],
+      ["every maker card has its slug id", MAKERS.every(m => document.getElementById(slug(m.name)))],
+      ["slug is url-safe", slug("Priya Rao-Sharma!") === "priya-rao-sharma"],
+      ["filter hidden while only one craft", chips.hidden === (Object.keys(counts).length < 2)],
+      ["filter hides non-matching", (() => { filterTo("__none__"); const h = [...cards.querySelectorAll(".card:not(.open-spot)")].every(x => x.hidden); filterTo("All"); return h; })()],
+      ["escapes html", esc("<b>") === "&lt;b&gt;"],
+      ["submit goes to the form", $("#submit").getAttribute("href") === SUBMIT_URL],
+      ["month label", fmtMonth("2026-09") === "Sep 2026"],
+      ["numbers pad to 3", pad3(7) === "007"],
+      ["first maker is No. 001", byJoin[0].no === 1],
+      ["story card is 1080x1350", c.width === 1080 && c.height === 1350],
+      ["story card never hits the footer (real + worst case)", clear(c) && clear(worst)]
+    ];
+    const fails = results.filter(r => !r[1]).map(r => r[0]);
+    document.title = fails.length ? "FAIL " + fails.join(", ") : "OK";
+    console.log("banyan self-check:", results);
+  })();
 }
 </script>
 </body>

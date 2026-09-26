@@ -25,15 +25,18 @@ One file. Every maker is one object in the `MAKERS` array in `index.html`:
 ```js
 {
   name: "Priya Rao",
-  meta: "17 · Pune",
+  city: "Pune",
+  age: 17,                      // optional — shown as "age 17" next to the join date, so it never goes stale
+  added: "2026-10",             // the month they joined; numbering and "updated" come from this
   crafts: ["Video", "Design"],
   blurb: "Edits short documentaries about her city.",
-  ships: [{ label: "reel", url: "https://…" }],
-  reach: { label: "Instagram", url: "https://…" }   // optional
+  ships: [{ label: "old-city", what: "A 6-minute film about the last hand-press printers in Pune.", url: "https://…" }],
+  open: ["freelance", "collabs"],                     // optional — only what they said
+  reach: { label: "Instagram", url: "https://…" }   // optional — only a contact they chose to share
 }
 ```
 
-Adding a maker is adding one object. Their link and filter chip appear automatically. Craft filters only show crafts that actually have makers in them, so there are never empty shelves.
+Adding a maker is adding one object. Everything else follows from it: their number (No. 001 is the first to join), their own link, the "updated" date, the craft filter (it only appears once there are two or more crafts), and their **Get your card** image — a 1080×1350 story card drawn in the browser that they can post.
 
 ## What it is not
 
@@ -43,7 +46,7 @@ Adding a maker is adding one object. Their link and filter chip appear automatic
 
 ## Run it
 
-Open `index.html`. `index.html?check` runs six self-tests (card per maker, url-safe links, filter, escaping, submit link) and shows the result in the tab title.
+Open `index.html`. `index.html?check` runs twelve self-tests — a card per maker, url-safe links, the filter staying hidden until there are two crafts, escaping, the form link, numbering, and the story card (right size, and never overlapping its footer even for a very long name) — and shows the result in the tab title.
 
 ---
 
