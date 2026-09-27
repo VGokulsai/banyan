@@ -138,7 +138,7 @@
   .reach a{color:var(--accent);font-weight:600;text-decoration:none;border-bottom:1px solid var(--edge)}
   .actions{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
   .act{display:inline-flex;align-items:center;gap:7px;min-height:40px;font-family:"JetBrains Mono",monospace;font-size:.74rem;
-    color:var(--accent);background:none;border:1px solid var(--edge);border-radius:999px;padding:.45rem .95rem;cursor:pointer;transition:all .15s}
+    color:var(--accent);background:none;border:1px solid var(--edge);border-radius:999px;padding:.45rem .95rem;cursor:pointer;transition:all .15s;text-decoration:none}
   .act:hover{background:rgba(119,142,105,.12)}
   .act svg{width:14px;height:14px}
 
@@ -243,7 +243,7 @@
         <div class="step"><div class="num">01</div><div><b>Send your work</b><span>Fill the short form: who you are, your craft, and links to what you've shipped.</span></div></div>
         <div class="step"><div class="num">02</div><div><b>A real person looks at it</b><span>Every submission is read by hand. The only bar: it's real and it's yours. Real means a stranger can open it — a live link, a repo, a video, a published piece. School projects count if they're public.</span></div></div>
         <div class="step"><div class="num">03</div><div><b>You go live, with your own link</b><span>You get banyan/#your-name — put it in your bio, your applications, your DMs.</span></div></div>
-        <div class="step"><div class="num">04</div><div><b>Made something new? Add it</b><span>Fill the same form again with the same name and your new project. After a quick check it goes to the top of your card, and your old work stays.</span></div></div>
+        <div class="step"><div class="num">04</div><div><b>Made something new? Add it</b><span>Tap <i>Add a project</i> on your card. Your details are already filled in; just add the new link. After a quick check it goes to the top of your card, and your old work stays.</span></div></div>
       </div>
       </div><div>
       <ul class="promise">
@@ -424,7 +424,8 @@ const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov
 const fmtMonth = ym => { const [y, m] = ym.split("-").map(Number); return MONTHS[m - 1] + " " + y; };
 const metaLine = m => [m.city, "joined " + fmtMonth(m.added) + (m.age ? ", age " + m.age : "")].filter(Boolean).join(" · ");
 const ICON_SHARE = `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 10V2M5 5l3-3 3 3M3 9v4h10V9" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-const ICON_CARD = `<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="1.5" width="10" height="13" rx="2" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M6 11h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`;
+const ICON_ADD = `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>`;
+const ICON_CARD =`<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="1.5" width="10" height="13" rx="2" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M6 11h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`;
 
 function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove("show"),1800); }
 
@@ -507,6 +508,22 @@ const sheetDone = (async () => {
   }
 })();
 
+// "Add a project" on a card: the same form, already filled with what's on the card, so a maker only adds the new link,
+// their email and their yes. It still goes through the hand check, which is also what stops a stranger editing someone's card.
+const FORM_IDS = { name: 74019584, city: 1281113680, craft: 1867988722, blurb: 1860860792, contact: 223586296 };
+const FORM_CRAFTS = ["Code", "Design", "Video", "Writing", "Music"];
+function addProjectUrl(m){
+  const q = new URLSearchParams({ usp: "pp_url" }), e = k => "entry." + FORM_IDS[k];
+  q.append(e("name"), m.name);
+  if (m.city) q.append(e("city"), m.city);
+  const other = m.crafts.find(c => !FORM_CRAFTS.includes(c));
+  m.crafts.filter(c => FORM_CRAFTS.includes(c)).forEach(c => q.append(e("craft"), c));
+  if (other) { q.append(e("craft"), "__other_option__"); q.append(e("craft") + ".other_option_response", other); }
+  if (m.blurb) q.append(e("blurb"), m.blurb);
+  if (m.reach) q.append(e("contact"), m.reach.url.replace(/^mailto:/, ""));
+  return SUBMIT_URL + "?" + q;
+}
+
 // the work itself, not just a link: if a maker's first link is a YouTube video, show it at the top of their card.
 // (A channel link has no single picture, so it stays a plain link.)
 function ytId(u){
@@ -557,7 +574,8 @@ function render(){
     (m.open && m.open.length ? `<div class="open">Open to: <b>${m.open.map(esc).join(" · ")}</b></div>` : "") +
     (m.reach ? `<div class="reach">Want to work with ${first}? <a href="${esc(m.reach.url)}" target="_blank" rel="noopener">${esc(m.reach.label)} →</a></div>` : "") +
     `<div class="actions"><button type="button" class="act" data-share="${id}">${ICON_SHARE}Share</button>` +
-    `<button type="button" class="act" data-card="${id}">${ICON_CARD}Get your card</button></div>`;
+    `<button type="button" class="act" data-card="${id}">${ICON_CARD}Get your card</button>` +
+    `<a class="act" href="${esc(addProjectUrl(m))}" target="_blank" rel="noopener" title="For ${first}: adds a new project to this card after a quick check">${ICON_ADD}Add a project</a></div>`;
   cards.appendChild(el);
   reveal(el, (i % 4) * 70);
   });
@@ -742,6 +760,14 @@ if (location.search.includes("check")) {
         return !rest.length && m.added === "2026-09" && m.age === 16 && m.blurb === "new" && m.crafts[0] === "Video"
           && m.ships.map(s => s.url).join() === "https://b.com/,https://a.com/";
       })()],
+      ["add-a-project opens the form filled with the card, never with private answers", (() => {
+        const u = new URL(addProjectUrl({ name: "Test Kid", city: "Pune", crafts: ["Video", "Animation"], blurb: "cuts things", reach: { url: "mailto:a@b.co" } }));
+        const p = u.searchParams, craft = p.getAll("entry.1867988722");
+        return u.href.startsWith(SUBMIT_URL) && p.get("entry.74019584") === "Test Kid" && p.get("entry.1281113680") === "Pune"
+          && craft.includes("Video") && craft.includes("__other_option__") && p.get("entry.1867988722.other_option_response") === "Animation"
+          && p.get("entry.223586296") === "a@b.co" && !p.has("entry.680607256") && !p.has("entry.682465784") && !p.has("entry.1965610453");
+      })()],
+      ["every card has its add-a-project link", [...cards.querySelectorAll(".card")].every(c => c.querySelector('a.act[href*="entry.74019584"]'))],
       ["form row → maker", row.name === "Test Kid" && row.age === undefined && row.city === "Pune" && row.crafts.length === 2
         && row.ships.length === 1 && row.ships[0].label === "YouTube" && row.reach.url === "mailto:a@b.co"],
       ["month label", fmtMonth("2026-09") === "Sep 2026"],
