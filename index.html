@@ -52,7 +52,14 @@
   h1 em{font-style:italic;color:var(--accent)}
   .tagline{color:var(--muted);font-size:1.12rem;margin:16px 0 0;max-width:52ch}
   .tagline b{color:var(--ink);font-weight:600}
-  .stamp{margin:22px 0 0;display:flex;gap:14px;flex-wrap:wrap}
+  .hero-cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+  .btn{display:inline-flex;align-items:center;min-height:44px;padding:.7rem 1.25rem;border-radius:999px;text-decoration:none;
+    font-family:"JetBrains Mono",monospace;font-weight:600;font-size:.76rem;text-transform:uppercase;letter-spacing:.06em;
+    background:var(--accent);color:var(--bg);border:1px solid var(--accent);transition:background .15s,transform .1s}
+  .btn:active{transform:scale(.97)}
+  .btn.ghost{background:none;color:var(--accent);border-color:var(--edge)}
+  .btn.ghost:hover{background:rgba(119,142,105,.12)}
+  .stamp{margin:20px 0 0;display:flex;gap:14px;flex-wrap:wrap}
   .stamp[hidden]{display:flex;visibility:hidden}   /* keeps its space, so nothing jumps when the count arrives */
   .hero-tree{margin-top:30px}
   .hero-tree svg{display:block;width:min(100%,540px);height:auto;margin:0 auto;overflow:visible}
@@ -101,6 +108,11 @@
   .craft{font-family:"JetBrains Mono",monospace;font-size:.66rem;text-transform:uppercase;letter-spacing:.07em;
     color:var(--rifle);background:var(--sage);border-radius:4px;padding:.15rem .45rem}
   .card .blurb{margin:14px 0 10px;font-family:"Instrument Serif",Georgia,serif;font-style:italic;font-size:1.35rem;line-height:1.3;color:var(--accent)}
+  .feature{display:block;position:relative;margin:4px 0 14px;border-radius:12px;overflow:hidden;aspect-ratio:16/9;background:var(--sand)}
+  .feature img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+  .feature:hover img{transform:scale(1.02)}
+  .play{position:absolute;left:14px;bottom:14px;width:44px;height:44px;border-radius:50%;background:rgba(21,21,19,.72);
+    color:var(--bg);display:grid;place-items:center;font-size:.85rem;padding-left:3px}
   /* the work, as a ledger */
   .ships{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
   .ships li{border-bottom:1px solid var(--line)}
@@ -182,6 +194,10 @@
       <div>
         <h1>Young makers in India, <em>seen.</em></h1>
         <p class="tagline"><b>Proof, not pedigree.</b> A place for the kids building real things in India and getting ignored for it — so the next one doesn't build alone.</p>
+        <div class="hero-cta">
+          <a class="btn" id="hero-submit" href="#join" target="_blank" rel="noopener">Get on Banyan →</a>
+          <a class="btn ghost" href="#makers">See the makers ↓</a>
+        </div>
         <!-- filled in by the script; stays hidden until it can actually count, so it never shows a false zero -->
         <p class="stamp mono" id="stamp" hidden><span><b id="count"></b> <span id="count-word"></span></span><span>updated <b id="updated"></b></span></p>
       </div>
@@ -457,6 +473,21 @@ const sheetDone = (async () => {
   }
 })();
 
+// the work itself, not just a link: if a maker's first link is a YouTube video, show it at the top of their card.
+// (A channel link has no single picture, so it stays a plain link.)
+function ytId(u){
+  try {
+    const x = new URL(u), h = x.hostname.replace(/^(www|m)\./, "");
+    const id = h === "youtu.be" ? x.pathname.slice(1).split("/")[0]
+      : h === "youtube.com" || h.endsWith(".youtube.com") ? (x.searchParams.get("v") || (x.pathname.match(/^\/(shorts|embed|live)\/([\w-]+)/) || [])[2] || "") : "";
+    return /^[\w-]{11}$/.test(id) ? id : "";
+  } catch { return ""; }
+}
+function feature(s){
+  const id = s && ytId(s.url);
+  return id ? `<a class="feature" href="${esc(s.url)}" target="_blank" rel="noopener"><img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="${esc(s.label)} video" loading="lazy"><span class="play" aria-hidden="true">▶</span></a>` : "";
+}
+
 // numbering: by join order (oldest = No. 001); display newest first
 const cards = $("#cards"), chips = $("#chips");
 let byJoin = [], counts = {};
@@ -487,6 +518,7 @@ function render(){
     `<div class="meta">${esc(metaLine(m))}</div>` +
     `<div class="crafts">${m.crafts.map(c => `<span class="craft">${esc(c)}</span>`).join("")}</div>` +
     `<p class="blurb">${esc(m.blurb)}</p>` +
+    feature(m.ships[0]) +
     `<ul class="ships">${ships}</ul>` +
     (m.open && m.open.length ? `<div class="open">Open to: <b>${m.open.map(esc).join(" · ")}</b></div>` : "") +
     (m.reach ? `<div class="reach">Want to work with ${first}? <a href="${esc(m.reach.url)}" target="_blank" rel="noopener">${esc(m.reach.label)} →</a></div>` : "") +
@@ -596,7 +628,7 @@ function filterTo(craft){
 }
 chips.addEventListener("click", e => { const c = e.target.closest(".chip"); if (c) filterTo(c.dataset.craft); });
 
-$("#submit").href = SUBMIT_URL;
+$("#submit").href = $("#hero-submit").href = SUBMIT_URL;
 
 // restrained scroll reveal — progressive enhancement, never leaves content hidden
 const io = "IntersectionObserver" in window ? new IntersectionObserver(es => {
@@ -647,7 +679,13 @@ if (location.search.includes("check")) {
       ["filter hidden while only one craft", chips.hidden === (Object.keys(counts).length < 2)],
       ["filter hides non-matching", (() => { filterTo("__none__"); const h = [...cards.querySelectorAll(".card")].every(x => x.hidden); filterTo("All"); return h; })()],
       ["escapes html", esc("<b>") === "&lt;b&gt;"],
-      ["submit goes to the form", $("#submit").getAttribute("href") === SUBMIT_URL],
+      ["both submit buttons go to the form", $("#submit").getAttribute("href") === SUBMIT_URL && $("#hero-submit").getAttribute("href") === SUBMIT_URL],
+      ["youtube: videos get a picture, channels and fakes don't", ytId("https://youtu.be/dQw4w9WgXcQ") === "dQw4w9WgXcQ"
+        && ytId("https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=30s") === "dQw4w9WgXcQ" && ytId("https://youtube.com/shorts/dQw4w9WgXcQ") === "dQw4w9WgXcQ"
+        && ytId("https://www.youtube.com/@ram_gamerz8275/videos") === "" && ytId("https://evil.com/watch?v=dQw4w9WgXcQ") === "" && ytId("https://notyoutube.com/watch?v=dQw4w9WgXcQ") === ""
+        && ytId('https://youtu.be/"><script>') === ""],
+      ["a video link becomes the card's picture", feature({ label: "x", url: "https://youtu.be/dQw4w9WgXcQ" }).includes("i.ytimg.com/vi/dQw4w9WgXcQ/")
+        && feature({ label: "x", url: "https://github.com/a" }) === "" && feature(undefined) === ""],
       ["stamp shows the real count, or hides and says it couldn't look", sheetState === "ok"
         ? !$("#stamp").hidden && $("#count").textContent === String(MAKERS.length) && $("#sheet-note").hidden
         : $("#stamp").hidden && !$("#sheet-note").hidden],
