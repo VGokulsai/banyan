@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Banyan — young makers in India, seen</title>
 <meta name="description" content="Young makers in India, seen. Code, design, video, writing, music — judged on what you've shipped, not your credentials.">
-<meta name="theme-color" content="#F6F1E7">
+<meta name="theme-color" content="#F1F0E9">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://vgokulsai.github.io/banyan/">
 <meta property="og:title" content="Banyan — young makers in India, seen">
@@ -15,43 +15,45 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://vgokulsai.github.io/banyan/og.png">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23F6F1E7'/%3E%3Ccircle cx='16' cy='12' r='8' fill='%232F5D46'/%3E%3Cpath d='M16 14v13M16 21l-5 6M16 21l5 6' stroke='%232F5D46' stroke-width='2.4' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23F1F0E9'/%3E%3Ccircle cx='9' cy='13' r='5.6' fill='%232F4A3E'/%3E%3Ccircle cx='16' cy='9.5' r='6.6' fill='%232F4A3E'/%3E%3Ccircle cx='23' cy='13' r='5.6' fill='%232F4A3E'/%3E%3Crect x='5' y='12' width='22' height='5.4' rx='2.7' fill='%232F4A3E'/%3E%3Cpath d='M14.3 16h3.4v11.2h-3.4z' fill='%2343442B'/%3E%3Cpath d='M8.2 17.5v9.7M23.8 17.5v9.7' stroke='%2343442B' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  /* Banyan: warm, rooted, editorial. Cream, ink, one green. Nothing else. */
+  /* Banyan: earthy and calm. Merino ground, onyx ink, juniper accent; sage/moss/rifle only in the tree and tags. */
   :root{
-    --bg:#F6F1E7; --card:#FFFDF7; --ink:#20261F; --muted:#5F665B;
-    --green:#2F5D46; --leaf:#3F7A5A; --line:#E6DECC; --edge:rgba(47,93,70,.3);
+    --bg:#F1F0E9; --card:#F8F7F2; --sand:#E0D4BE; --line:#DCD6C6;
+    --ink:#151513; --muted:#5E5A50; --accent:#2F4A3E; --moss:#778E69; --sage:#BCC399; --rifle:#43442B;
+    --edge:rgba(47,74,62,.28);
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{margin:0;background:var(--bg);color:var(--ink);
     font:17px/1.6 "Instrument Sans","Segoe UI",system-ui,sans-serif;
     -webkit-font-smoothing:antialiased;display:flex;justify-content:center}
-  .wrap{width:100%;max-width:760px;padding:36px 20px 80px}
+  .wrap{width:100%;max-width:760px;padding:32px 20px 80px}
   .mono,.sec-h h2{font-family:"JetBrains Mono",ui-monospace,monospace;text-transform:uppercase;letter-spacing:.1em;font-size:.7rem;font-weight:400;color:var(--muted);margin:0}
   a{color:inherit}
   button{font:inherit}
 
   /* header */
   header{display:flex;align-items:center;justify-content:space-between;gap:12px}
-  .brand{display:flex;align-items:center;gap:9px;text-decoration:none}
-  .logo{width:26px;height:26px;flex:none}
-  .mark{font-family:"Instrument Serif",Georgia,serif;font-size:2rem;line-height:1;color:var(--green)}
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+  .brand .logo{height:40px;width:auto;display:block}
+  .mark{font-family:"Instrument Serif",Georgia,serif;font-size:2.05rem;line-height:1;color:var(--accent)}
   nav{display:flex;gap:6px}
   nav a{font-family:"JetBrains Mono",monospace;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);text-decoration:none;padding:12px 6px}
-  nav a:hover{color:var(--green)}
+  nav a:hover{color:var(--accent)}
 
   /* hero */
   h1{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:clamp(2.7rem,8vw,4.6rem);
     line-height:1.02;letter-spacing:-.01em;margin:30px 0 0}
-  h1 em{font-style:italic;color:var(--green)}
+  h1 em{font-style:italic;color:var(--accent)}
   .tagline{color:var(--muted);font-size:1.12rem;margin:16px 0 0;max-width:52ch}
   .tagline b{color:var(--ink);font-weight:600}
   .stamp{margin-top:22px;display:flex;gap:14px;flex-wrap:wrap}
-  .stamp b{color:var(--green);font-weight:500}
+  .stamp[hidden]{display:none}
+  .stamp b{color:var(--accent);font-weight:500}
 
   /* sections */
   .sec{margin-top:56px;scroll-margin-top:16px}
@@ -63,51 +65,46 @@
   .chips[hidden]{display:none}
   .chip{font-family:"JetBrains Mono",monospace;font-size:.74rem;letter-spacing:.04em;cursor:pointer;min-height:36px;
     padding:.4rem .9rem;border-radius:999px;border:1px solid var(--line);background:none;color:var(--muted);transition:all .15s}
-  .chip:hover{border-color:var(--leaf);color:var(--green)}
-  .chip.on{background:var(--green);border-color:var(--green);color:var(--bg)}
+  .chip:hover{border-color:var(--moss);color:var(--accent)}
+  .chip.on{background:var(--accent);border-color:var(--accent);color:var(--bg)}
   .chip span{opacity:.65;margin-left:4px}
 
   .viewing{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;
     font-size:.88rem;color:var(--muted);border:1px solid var(--edge);border-radius:12px;padding:.6rem .9rem}
   .viewing[hidden]{display:none}
-  .viewing button{background:none;border:0;color:var(--green);font-weight:600;cursor:pointer;padding:6px 0}
+  .viewing button{background:none;border:0;color:var(--accent);font-weight:600;cursor:pointer;padding:6px 0}
 
   /* maker cards */
   .cards{display:flex;flex-direction:column;gap:16px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;scroll-margin-top:16px;
     transition:box-shadow .4s,border-color .4s}
   .card[hidden]{display:none}
-  .card.flash{border-color:var(--leaf);box-shadow:0 0 0 4px rgba(63,122,90,.2)}
-  .no{font-family:"JetBrains Mono",monospace;font-size:.7rem;color:var(--leaf);letter-spacing:.08em}
+  .card.flash{border-color:var(--moss);box-shadow:0 0 0 4px rgba(119,142,105,.25)}
+  .no{font-family:"JetBrains Mono",monospace;font-size:.7rem;color:var(--muted);letter-spacing:.08em}
   .card h3{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:1.7rem;line-height:1.1;margin:2px 0 0}
   .card .meta{font-family:"JetBrains Mono",monospace;font-size:.72rem;color:var(--muted);margin-top:5px;text-transform:uppercase;letter-spacing:.06em}
   .crafts{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
   .craft{font-family:"JetBrains Mono",monospace;font-size:.66rem;text-transform:uppercase;letter-spacing:.07em;
-    color:var(--green);border:1px solid var(--edge);border-radius:4px;padding:.12rem .4rem}
-  .card .blurb{margin:14px 0 10px;font-family:"Instrument Serif",Georgia,serif;font-style:italic;font-size:1.35rem;line-height:1.3;color:var(--green)}
+    color:var(--rifle);background:var(--sage);border-radius:4px;padding:.15rem .45rem}
+  .card .blurb{margin:14px 0 10px;font-family:"Instrument Serif",Georgia,serif;font-style:italic;font-size:1.35rem;line-height:1.3;color:var(--accent)}
   /* the work, as a ledger */
   .ships{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
   .ships li{border-bottom:1px solid var(--line)}
   .ships a{display:grid;grid-template-columns:8.6rem 1fr auto;gap:14px;align-items:baseline;
     min-height:46px;padding:11px 2px;text-decoration:none;transition:background .15s}
-  .ships a:hover{background:rgba(47,93,70,.05)}
-  .ships .lbl{font-family:"JetBrains Mono",monospace;font-size:.82rem;color:var(--green);overflow-wrap:anywhere}
+  .ships a:hover{background:rgba(119,142,105,.1)}
+  .ships .lbl{font-family:"JetBrains Mono",monospace;font-size:.82rem;color:var(--accent);overflow-wrap:anywhere}
   .ships .what{font-family:"Instrument Serif",Georgia,serif;font-size:1.18rem;line-height:1.3;color:var(--ink)}
-  .ships .arw{color:var(--leaf)}
+  .ships .arw{color:var(--moss)}
   .open{margin-top:14px;font-family:"JetBrains Mono",monospace;font-size:.72rem;letter-spacing:.05em;color:var(--muted);text-transform:uppercase}
-  .open b{color:var(--green);font-weight:500}
+  .open b{color:var(--accent);font-weight:500}
   .reach{margin-top:8px;font-size:.9rem;color:var(--muted)}
-  .reach a{color:var(--green);font-weight:600;text-decoration:none;border-bottom:1px solid var(--edge)}
+  .reach a{color:var(--accent);font-weight:600;text-decoration:none;border-bottom:1px solid var(--edge)}
   .actions{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
   .act{display:inline-flex;align-items:center;gap:7px;min-height:40px;font-family:"JetBrains Mono",monospace;font-size:.74rem;
-    color:var(--green);background:none;border:1px solid var(--edge);border-radius:999px;padding:.45rem .95rem;cursor:pointer;transition:all .15s}
-  .act:hover{background:rgba(47,93,70,.07)}
+    color:var(--accent);background:none;border:1px solid var(--edge);border-radius:999px;padding:.45rem .95rem;cursor:pointer;transition:all .15s}
+  .act:hover{background:rgba(119,142,105,.12)}
   .act svg{width:14px;height:14px}
-  .card.open-spot{background:none;border:1px dashed var(--edge);text-align:center;color:var(--muted)}
-  .card.open-spot h3{color:var(--green)}
-  .card.open-spot p{margin:.5rem 0 0}
-  .card.open-spot a,.card.open-spot button{color:var(--green);font-weight:600}
-  .card.open-spot button{background:none;border:0;cursor:pointer;padding:6px 0;text-decoration:underline;text-underline-offset:3px}
 
   /* editorial blocks */
   .block p{margin:.4rem 0 0}
@@ -115,24 +112,26 @@
   .steps{margin-top:6px}
   .step{display:grid;grid-template-columns:52px 1fr;gap:10px;padding:16px 0;border-bottom:1px solid var(--line)}
   .step:last-child{border-bottom:0}
-  .step .num{font-family:"Instrument Serif",Georgia,serif;font-size:1.9rem;line-height:1;color:var(--leaf)}
+  .step .num{font-family:"Instrument Serif",Georgia,serif;font-size:1.9rem;line-height:1;color:var(--moss)}
   .step b{display:block;font-weight:600}
   .step span{color:var(--muted);font-size:.95rem}
-  .promise{margin:18px 0 0;padding:16px 18px;list-style:none;border:1px solid var(--edge);border-radius:14px}
+  .promise{margin:18px 0 0;padding:16px 18px;list-style:none;border:1px solid var(--edge);border-radius:14px;background:var(--card)}
   .promise li{padding:4px 0 4px 22px;position:relative;font-size:.95rem}
-  .promise li::before{content:"";position:absolute;left:2px;top:.72em;width:9px;height:9px;border-radius:50%;background:var(--leaf)}
+  .promise li::before{content:"";position:absolute;left:2px;top:.72em;width:9px;height:9px;border-radius:50%;background:var(--moss)}
+  .nominate{margin-top:16px;font-size:.95rem;color:var(--muted)}
+  .nominate button{background:none;border:0;cursor:pointer;padding:6px 0;color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:3px}
 
   /* CTA */
-  .cta{margin-top:26px;background:var(--green);color:var(--bg);border-radius:18px;padding:28px 24px;text-align:center}
+  .cta{margin-top:26px;background:var(--accent);color:var(--bg);border-radius:18px;padding:28px 24px;text-align:center}
   .cta h3{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:1.8rem;margin:0}
   .cta p{margin:.5rem auto 18px;max-width:42ch;color:var(--bg);opacity:.85}
   .cta a{display:inline-block;text-decoration:none;font-family:"JetBrains Mono",monospace;font-weight:600;
-    text-transform:uppercase;letter-spacing:.06em;font-size:.8rem;background:var(--bg);color:var(--green);
+    text-transform:uppercase;letter-spacing:.06em;font-size:.8rem;background:var(--bg);color:var(--accent);
     border-radius:999px;padding:.8rem 1.5rem;transition:transform .1s}
   .cta a:active{transform:scale(.96)}
 
   footer{margin-top:44px;color:var(--muted);font-family:"JetBrains Mono",monospace;font-size:.72rem;letter-spacing:.05em;text-align:center;line-height:1.8}
-  footer b{color:var(--green)}
+  footer b{color:var(--accent)}
   .nw{white-space:nowrap}
 
   .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(90px);opacity:0;
@@ -145,6 +144,8 @@
     .ships .what{grid-column:1;grid-row:2}
     .ships .arw{grid-row:1/3;grid-column:2;align-self:center}
     nav a{padding:12px 4px}
+    .brand .logo{height:34px}
+    .mark{font-size:1.8rem}
   }
 
   /* restrained scroll reveal, off for reduced-motion */
@@ -159,16 +160,14 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <div class="wrap">
     <header>
-      <a class="brand" href="#" aria-label="Banyan home">
-        <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="12" r="8" fill="#2F5D46"/><path d="M16 14v13M16 21l-5 6M16 21l5 6" stroke="#2F5D46" stroke-width="2.4" stroke-linecap="round" fill="none"/></svg>
-        <span class="mark">Banyan</span>
-      </a>
+      <a class="brand" href="#" aria-label="Banyan home"><span id="logo"></span><span class="mark">Banyan</span></a>
       <nav><a href="#makers">Makers</a><a href="#hiring">Hiring</a><a href="#join">Join</a></nav>
     </header>
 
     <h1>Young makers in India, <em>seen.</em></h1>
     <p class="tagline"><b>Proof, not pedigree.</b> A place for the kids building real things in India and getting ignored for it — so the next one doesn't build alone.</p>
-    <p class="stamp mono"><span><b id="count">0</b> <span id="count-word">makers</span></span><span>updated <b id="updated">—</b></span></p>
+    <!-- filled in by the script; stays hidden until it can actually count, so it never shows a false zero -->
+    <p class="stamp mono" id="stamp" hidden><span><b id="count"></b> <span id="count-word"></span></span><span>updated <b id="updated"></b></span></p>
 
     <section class="sec" id="makers">
       <div class="sec-h"><h2>The makers</h2><span class="line"></span></div>
@@ -196,6 +195,7 @@
         <li>Share only the contact you want. No phone numbers, ever.</li>
         <li>Want off? One message and it's gone within a day.</li>
       </ul>
+      <p class="nominate">Know someone who should be here? <button type="button" id="send-page">Send them this page</button></p>
       <div class="cta">
         <h3>Made something? Get it seen.</h3>
         <p>No degree, no connections, no fee. Just proof.</p>
@@ -240,6 +240,89 @@ const MAKERS = [
 const SUBMIT_URL = "https://docs.google.com/forms/d/e/1FAIpQLScYGmn1AkW9NnL4a9pIXy7HM5-rfDJAbnCHgKPYomhOJISxbw/viewform";
 const SITE = "https://vgokulsai.github.io/banyan/";
 
+// ─── The banyan, drawn from code ───
+// One seeded tree: the header logo (SVG) and the story-card badge (canvas) come from the same shapes,
+// so they can never drift apart. Canvas uses Path2D, not an <img> of an SVG, so it works on iPhone Safari too.
+const PAL = { merino:"#F1F0E9", card:"#F8F7F2", juniper:"#2F4A3E", moss:"#778E69", sage:"#BCC399", rifle:"#43442B", taupe:"#5E5A50", onyx:"#151513", line:"#DCD6C6" };
+const LEAF = "M0 0 C2.6 -3.6 7.4 -3.6 10 0 C7.4 3.6 2.6 3.6 0 0Z";
+function rng(seed){ return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function banyan(){
+  const r = rng(11), ground = 98, fx = 60, fy = 66, rad = d => d * Math.PI / 180, jit = n => (r() * 2 - 1) * n, f = n => n.toFixed(1);
+  const roots = [], wood = [], leaves = [], ends = [];
+  function branch(x, y, ang, len, w, depth, outer){
+    const ex = x + Math.cos(rad(ang)) * len, ey = y + Math.sin(rad(ang)) * len;
+    const bend = (ang < -90 ? -1 : 1) * len * 0.12;
+    const cx = (x + ex) / 2 + Math.cos(rad(ang + 90)) * bend, cy = (y + ey) / 2 + Math.sin(rad(ang + 90)) * bend;
+    wood.push({ d: `M${f(x)} ${f(y)} Q${f(cx)} ${f(cy)} ${f(ex)} ${f(ey)}`, stroke: PAL.rifle, w: +w.toFixed(2) });
+    if (outer && depth >= 1) {                     // aerial roots: the banyan's signature, dropping to the ground
+      [0.45, 0.9].forEach(t => {
+        const px = (1-t)*(1-t)*x + 2*(1-t)*t*cx + t*t*ex, py = (1-t)*(1-t)*y + 2*(1-t)*t*cy + t*t*ey;
+        roots.push({ d: `M${f(px)} ${f(py)} L${f(px + jit(0.6))} ${ground}`, stroke: PAL.rifle, w: +(1.2 + depth * 0.35).toFixed(2), op: 0.8 });
+      });
+    }
+    if (depth === 0) { ends.push([ex, ey]); return; }
+    const spread = 22 + jit(6);
+    branch(ex, ey, ang - spread, len * 0.66, w * 0.64, depth - 1, false);
+    branch(ex, ey, ang + spread, len * 0.66, w * 0.64, depth - 1, false);
+    if (depth === 2) branch(ex, ey, ang + jit(6), len * 0.55, w * 0.55, depth - 1, false);
+  }
+  wood.push({ d: `M49 ${ground} C53 88 55 76 56 ${fy} L64 ${fy} C65 76 67 88 71 ${ground} Z`, fill: PAL.rifle });
+  wood.push({ d: `M49 ${ground} q-7 -1 -12 1 M71 ${ground} q7 -1 12 1`, stroke: PAL.rifle, w: 3 });
+  branch(fx - 2, fy + 1, -168 + jit(3), 30, 6.2, 2, true);
+  branch(fx - 1, fy,     -124 + jit(4), 24, 5.6, 2, false);
+  branch(fx + 1, fy,      -56 + jit(4), 24, 5.6, 2, false);
+  branch(fx + 2, fy + 1,  -12 + jit(3), 30, 6.2, 2, true);
+  branch(fx,     fy - 2,  -90 + jit(3), 20, 5.2, 1, false);
+  const tones = [PAL.juniper, PAL.juniper, PAL.moss, PAL.moss, PAL.sage];
+  ends.forEach(([x, y]) => {
+    for (let k = 0; k < 5; k++) {
+      const a = r() * Math.PI * 2, d = r() * 7;
+      leaves.push({ d: LEAF, fill: tones[Math.floor(r() * tones.length)],
+        t: [+(x + Math.cos(a) * d).toFixed(1), +(y + Math.sin(a) * d * 0.75 - 1.5).toFixed(1), +(r() * 360).toFixed(0), +(0.8 + r() * 0.45).toFixed(2)] });
+    }
+  });
+  const xs = ends.map(p => p[0]), ys = ends.map(p => p[1]);
+  const box = { minX: Math.min(...xs, 37) - 12, maxX: Math.max(...xs, 83) + 12, minY: Math.min(...ys) - 12, maxY: ground + 3 };
+  const groundLine = { d: `M${f(box.minX + 4)} ${ground} H${f(box.maxX - 4)}`, stroke: PAL.rifle, w: 1.6, op: 0.4 };
+  return { prims: [...roots, ...wood, ...leaves, groundLine], box };
+}
+const TREE = banyan();
+// the frame each version draws into: plain (logo) or ring (badge, branch tips meeting the circle)
+function frame(ring){
+  const b = TREE.box, w = b.maxX - b.minX, h = b.maxY - b.minY;
+  if (!ring) return { x: b.minX, y: b.minY, w, h };
+  const cx = (b.minX + b.maxX) / 2, cy = (b.minY + b.maxY) / 2 - 4, R = Math.max(w, h) / 2 + 3;
+  return { x: cx - R - 3, y: cy - R - 3, w: 2 * R + 6, h: 2 * R + 6, cx, cy, R };
+}
+function treeSVG({ ring = false, cls = "" } = {}){
+  const v = frame(ring);
+  const body = TREE.prims.map(p =>
+    `<path d="${p.d}" fill="${p.fill || "none"}"` +
+    (p.stroke ? ` stroke="${p.stroke}" stroke-width="${p.w}" stroke-linecap="round"` : "") +
+    (p.op ? ` opacity="${p.op}"` : "") +
+    (p.t ? ` transform="translate(${p.t[0]} ${p.t[1]}) rotate(${p.t[2]}) scale(${p.t[3]})"` : "") + "/>").join("");
+  const ringEl = ring ? `<circle cx="${v.cx.toFixed(1)}" cy="${v.cy.toFixed(1)}" r="${v.R.toFixed(1)}" fill="none" stroke="${PAL.moss}" stroke-width="3"/>` : "";
+  return `<svg class="${cls}" viewBox="${v.x.toFixed(1)} ${v.y.toFixed(1)} ${v.w.toFixed(1)} ${v.h.toFixed(1)}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${ringEl}${body}</svg>`;
+}
+function drawTree(ctx, { ring = false, x, y, height }){
+  const v = frame(ring), s = height / v.h;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.translate(-v.x, -v.y);
+  ctx.lineCap = "round";
+  if (ring) { ctx.beginPath(); ctx.arc(v.cx, v.cy, v.R, 0, Math.PI * 2); ctx.strokeStyle = PAL.moss; ctx.lineWidth = 3; ctx.stroke(); }
+  TREE.prims.forEach(p => {
+    ctx.save();
+    if (p.t) { ctx.translate(p.t[0], p.t[1]); ctx.rotate(p.t[2] * Math.PI / 180); ctx.scale(p.t[3], p.t[3]); }
+    ctx.globalAlpha = p.op || 1;
+    const path = new Path2D(p.d);
+    if (p.fill) { ctx.fillStyle = p.fill; ctx.fill(path); }
+    if (p.stroke) { ctx.strokeStyle = p.stroke; ctx.lineWidth = p.w; ctx.stroke(path); }
+    ctx.restore();
+  });
+  ctx.restore();
+  return v.w * s;   // drawn width, for layout
+}
+document.getElementById("logo").innerHTML = treeSVG({ cls: "logo" });
+
 const $ = s => document.querySelector(s);
 const slug = n => n.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -257,10 +340,13 @@ const byJoin = [...MAKERS].sort((a, b) => a.added.localeCompare(b.added));
 byJoin.forEach((m, i) => m.no = i + 1);
 const display = [...byJoin].reverse();
 
-// the stamp — derived, never typed
-$("#count").textContent = MAKERS.length;
-$("#count-word").textContent = MAKERS.length === 1 ? "maker" : "makers";
-$("#updated").textContent = byJoin.length ? fmtMonth(byJoin[byJoin.length - 1].added) : "—";
+// the stamp — derived, never typed, and only shown once it's real
+if (MAKERS.length) {
+  $("#count").textContent = MAKERS.length;
+  $("#count-word").textContent = MAKERS.length === 1 ? "maker" : "makers";
+  $("#updated").textContent = fmtMonth(byJoin[byJoin.length - 1].added);
+  $("#stamp").hidden = false;
+}
 
 // cards
 const cards = $("#cards");
@@ -283,12 +369,6 @@ display.forEach(m => {
     `<button type="button" class="act" data-card="${id}">${ICON_CARD}Get your card</button></div>`;
   cards.appendChild(el);
 });
-const openSpot = document.createElement("div");
-openSpot.className = "card open-spot";
-openSpot.innerHTML = `<h3>This spot is yours.</h3>` +
-  `<p>Making things in India and no one's looking? <a href="#join">Get on Banyan →</a></p>` +
-  `<p>Know someone who should be here? <button type="button" id="send-page">Send them this page</button></p>`;
-cards.appendChild(openSpot);
 
 // share: phone share sheet first, copy link as fallback
 async function shareUrl(url, title){
@@ -300,41 +380,38 @@ async function shareUrl(url, title){
 // "Get your card": a 1080×1350 image drawn in the browser, ready for a story
 async function makeCard(m){
   if (document.fonts) {
-    await Promise.all(['96px "Instrument Serif"', 'italic 48px "Instrument Serif"', '30px "JetBrains Mono"', '34px "Instrument Sans"'].map(f => document.fonts.load(f)));
+    await Promise.all(['96px "Instrument Serif"', 'italic 48px "Instrument Serif"', '30px "JetBrains Mono"'].map(f => document.fonts.load(f)));
   }
   const W = 1080, H = 1350, c = document.createElement("canvas");
   c.width = W; c.height = H;
-  const x = c.getContext("2d"), G = "#2F5D46", INK = "#20261F", MUT = "#5F665B", L = 96, R = W - 96;
+  const x = c.getContext("2d"), L = 96, R = W - 96;
   const fit = (t, max) => { if (x.measureText(t).width <= max) return t; while (t.length && x.measureText(t + "…").width > max) t = t.slice(0, -1); return t + "…"; };
-  x.fillStyle = "#F6F1E7"; x.fillRect(0, 0, W, H);
-  x.strokeStyle = "rgba(47,93,70,.3)"; x.lineWidth = 2; x.strokeRect(40, 40, W - 80, H - 80);
-  // mark
-  x.fillStyle = G; x.beginPath(); x.arc(L + 20, 148, 20, 0, Math.PI * 2); x.fill();
-  x.strokeStyle = G; x.lineWidth = 6; x.lineCap = "round"; x.beginPath();
-  x.moveTo(L + 20, 152); x.lineTo(L + 20, 186); x.moveTo(L + 20, 172); x.lineTo(L + 8, 188); x.moveTo(L + 20, 172); x.lineTo(L + 32, 188); x.stroke();
-  x.font = '56px "Instrument Serif"'; x.fillStyle = G; x.fillText("Banyan", L + 58, 172);
-  x.font = '28px "JetBrains Mono"'; x.fillStyle = "#3F7A5A"; x.textAlign = "right"; x.fillText("No. " + pad3(m.no), R, 168); x.textAlign = "left";
+  x.fillStyle = PAL.merino; x.fillRect(0, 0, W, H);
+  x.strokeStyle = "rgba(47,74,62,.28)"; x.lineWidth = 2; x.strokeRect(40, 40, W - 80, H - 80);
+  // badge: the ring banyan, with the wordmark beside it
+  const bw = drawTree(x, { ring: true, x: L - 6, y: 84, height: 120 });
+  x.font = '60px "Instrument Serif"'; x.fillStyle = PAL.juniper; x.fillText("Banyan", L + bw + 14, 164);
+  x.font = '28px "JetBrains Mono"'; x.fillStyle = PAL.taupe; x.textAlign = "right"; x.fillText("No. " + pad3(m.no), R, 158); x.textAlign = "left";
   // name, wrapped to two lines
-  x.font = '124px "Instrument Serif"'; x.fillStyle = INK;
+  x.font = '124px "Instrument Serif"'; x.fillStyle = PAL.onyx;
   const words = m.name.split(" "); let line = "", lines = [];
   words.forEach(w => { const t = line ? line + " " + w : w; if (x.measureText(t).width > R - L && line) { lines.push(line); line = w; } else line = t; });
   lines.push(line); lines = lines.slice(0, 2);
   let y = 400; lines.forEach(t => { x.fillText(fit(t, R - L), L, y); y += 128; });
-  x.font = '28px "JetBrains Mono"'; x.fillStyle = MUT; x.fillText(fit(metaLine(m).toUpperCase(), R - L), L, y - 50);
-  x.fillStyle = G; x.fillText(fit(m.crafts.join(" · ").toUpperCase(), R - L), L, y);
+  x.font = '28px "JetBrains Mono"'; x.fillStyle = PAL.taupe; x.fillText(fit(metaLine(m).toUpperCase(), R - L), L, y - 50);
+  x.fillStyle = PAL.juniper; x.fillText(fit(m.crafts.join(" · ").toUpperCase(), R - L), L, y);
   // work
-  y += 50; x.fillStyle = "#E6DECC"; x.fillRect(L, y, R - L, 2);
+  y += 50; x.fillStyle = PAL.line; x.fillRect(L, y, R - L, 2);
   const maxShips = lines.length > 1 ? 2 : 3;   // a long name gets fewer rows, so nothing hits the footer
-  const wrap2 = (t, max) => {           // up to two lines; ellipsis only if it truly overflows two
+  const wrap2 = (t, max) => {                   // up to two lines, balanced so no word is left hanging alone
     const ws = t.split(" "), out = []; let cur = "";
     ws.forEach(w => { const n = cur ? cur + " " + w : w; if (x.measureText(n).width > max && cur) { out.push(cur); cur = w; } else cur = n; });
     out.push(cur);
     if (out.length > 2) return [out[0], fit(out.slice(1).join(" "), max)];
-    if (out.length === 2) {               // balance the two lines so no word is left hanging alone
+    if (out.length === 2) {
       let best = null;
       for (let i = 1; i < ws.length; i++) {
-        const a = ws.slice(0, i).join(" "), b = ws.slice(i).join(" ");
-        const wa = x.measureText(a).width, wb = x.measureText(b).width;
+        const a = ws.slice(0, i).join(" "), b = ws.slice(i).join(" "), wa = x.measureText(a).width, wb = x.measureText(b).width;
         if (wa <= max && wb <= max && (!best || Math.max(wa, wb) < best.w)) best = { a, b, w: Math.max(wa, wb) };
       }
       if (best) return [best.a, best.b];
@@ -342,16 +419,16 @@ async function makeCard(m){
     return out;
   };
   m.ships.slice(0, maxShips).forEach(s => {
-    y += 64; x.font = '30px "JetBrains Mono"'; x.fillStyle = G; x.fillText(fit(s.label, R - L), L, y);
-    x.font = '36px "Instrument Serif"'; x.fillStyle = INK;
+    y += 64; x.font = '30px "JetBrains Mono"'; x.fillStyle = PAL.juniper; x.fillText(fit(s.label, R - L), L, y);
+    x.font = '36px "Instrument Serif"'; x.fillStyle = PAL.onyx;
     const ls = wrap2(s.what || "", R - L);
     ls.forEach((t, i) => x.fillText(t, L, y + 44 + i * 42));
-    y += 44 + (ls.length - 1) * 42 + 26; x.fillStyle = "#E6DECC"; x.fillRect(L, y, R - L, 2);
+    y += 44 + (ls.length - 1) * 42 + 26; x.fillStyle = PAL.line; x.fillRect(L, y, R - L, 2);
   });
   c.contentBottom = y;
   // foot
-  x.font = 'italic 56px "Instrument Serif"'; x.fillStyle = G; x.fillText("Proof, not pedigree.", L, H - 150);
-  x.font = '26px "JetBrains Mono"'; x.fillStyle = MUT; x.fillText(fit(("vgokulsai.github.io/banyan/#" + slug(m.name)), R - L), L, H - 98);
+  x.font = 'italic 56px "Instrument Serif"'; x.fillStyle = PAL.juniper; x.fillText("Proof, not pedigree.", L, H - 150);
+  x.font = '26px "JetBrains Mono"'; x.fillStyle = PAL.taupe; x.fillText(fit(("vgokulsai.github.io/banyan/#" + slug(m.name)), R - L), L, H - 98);
   return c;
 }
 async function giveCard(m){
@@ -371,8 +448,8 @@ cards.addEventListener("click", e => {
   const s = e.target.closest("[data-share]"), g = e.target.closest("[data-card]");
   if (s) { const m = MAKERS.find(x => slug(x.name) === s.dataset.share); shareUrl(SITE + "#" + s.dataset.share, m.name + " on Banyan"); }
   if (g) { const m = MAKERS.find(x => slug(x.name) === g.dataset.card); giveCard(m); }
-  if (e.target.id === "send-page") shareUrl(SITE, "Banyan — young makers in India, seen");
 });
+$("#send-page").addEventListener("click", () => shareUrl(SITE, "Banyan — young makers in India, seen"));
 
 // craft filter — only when there are 2+ crafts, so it never pretends
 const counts = {};
@@ -380,7 +457,7 @@ MAKERS.forEach(m => m.crafts.forEach(c => counts[c] = (counts[c] || 0) + 1));
 const chips = $("#chips");
 function filterTo(craft){
   chips.querySelectorAll(".chip").forEach(c => c.classList.toggle("on", c.dataset.craft === craft));
-  cards.querySelectorAll(".card:not(.open-spot)").forEach(c => { c.hidden = craft !== "All" && !c.dataset.crafts.split("|").includes(craft); });
+  cards.querySelectorAll(".card").forEach(c => { c.hidden = craft !== "All" && !c.dataset.crafts.split("|").includes(craft); });
 }
 if (Object.keys(counts).length > 1) {
   const chip = (label, n) => { const b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.dataset.craft = label; b.innerHTML = `${esc(label)}<span>${n}</span>`; chips.appendChild(b); return b; };
@@ -428,18 +505,21 @@ if (location.search.includes("check")) {
     const long = "A very long description of a thing someone made that keeps going well past two full lines of text on the card";
     const worst = await makeCard({ name: "Venkata Subrahmanya Lakshminarayana", city: "Visakhapatnam", age: 17, added: "2026-09", no: 12,
       crafts: ["Video", "Design", "Music"], ships: [1, 2, 3].map(i => ({ label: "project-" + i, what: long })) });
-    const clear = cv => cv.contentBottom < 1350 - 150 - 56;   // below the "Proof, not pedigree." line
+    const clear = cv => cv.contentBottom < 1350 - 150 - 56;
     const results = [
-      ["one card per maker + open spot", cards.querySelectorAll(".card").length === MAKERS.length + 1],
+      ["one card per maker", cards.querySelectorAll(".card").length === MAKERS.length],
       ["every maker card has its slug id", MAKERS.every(m => document.getElementById(slug(m.name)))],
       ["slug is url-safe", slug("Priya Rao-Sharma!") === "priya-rao-sharma"],
       ["filter hidden while only one craft", chips.hidden === (Object.keys(counts).length < 2)],
-      ["filter hides non-matching", (() => { filterTo("__none__"); const h = [...cards.querySelectorAll(".card:not(.open-spot)")].every(x => x.hidden); filterTo("All"); return h; })()],
+      ["filter hides non-matching", (() => { filterTo("__none__"); const h = [...cards.querySelectorAll(".card")].every(x => x.hidden); filterTo("All"); return h; })()],
       ["escapes html", esc("<b>") === "&lt;b&gt;"],
       ["submit goes to the form", $("#submit").getAttribute("href") === SUBMIT_URL],
+      ["stamp shows the real count (no false zero)", !$("#stamp").hidden && $("#count").textContent === String(MAKERS.length)],
       ["month label", fmtMonth("2026-09") === "Sep 2026"],
       ["numbers pad to 3", pad3(7) === "007"],
       ["first maker is No. 001", byJoin[0].no === 1],
+      ["logo is drawn in the header", !!document.querySelector("#logo svg path")],
+      ["tree is the same every load (seeded)", JSON.stringify(banyan()) === JSON.stringify(TREE)],
       ["story card is 1080x1350", c.width === 1080 && c.height === 1350],
       ["story card never hits the footer (real + worst case)", clear(c) && clear(worst)]
     ];
