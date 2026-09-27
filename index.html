@@ -243,6 +243,7 @@
         <div class="step"><div class="num">01</div><div><b>Send your work</b><span>Fill the short form: who you are, your craft, and links to what you've shipped.</span></div></div>
         <div class="step"><div class="num">02</div><div><b>A real person looks at it</b><span>Every submission is read by hand. The only bar: it's real and it's yours. Real means a stranger can open it — a live link, a repo, a video, a published piece. School projects count if they're public.</span></div></div>
         <div class="step"><div class="num">03</div><div><b>You go live, with your own link</b><span>You get banyan/#your-name — put it in your bio, your applications, your DMs.</span></div></div>
+        <div class="step"><div class="num">04</div><div><b>Made something new? Add it</b><span>Fill the same form again with the same name and your new project. After a quick check it goes to the top of your card, and your old work stays.</span></div></div>
       </div>
       </div><div>
       <ul class="promise">
@@ -474,6 +475,19 @@ function rowToMaker(o){
     reach: reach ? { label: reach.startsWith("mailto:") ? "Email" : platform(reach), url: reach } : undefined
   };
 }
+// A maker can fill the form again with new work (same name): their approved entries become one card.
+// Newest wins for words and contact; the first entry keeps their join month and age; links from every entry, newest first.
+function mergeUpdates(list){
+  const by = new Map();
+  list.forEach(m => {
+    const k = slug(m.name), old = by.get(k);
+    if (!old) return by.set(k, m);
+    const seen = new Set(), ships = [...m.ships, ...old.ships].filter(s => !seen.has(s.url) && seen.add(s.url)).slice(0, 6);
+    const filled = Object.fromEntries(Object.entries(m).filter(([, v]) => v !== undefined && v !== "" && !(Array.isArray(v) && !v.length)));
+    by.set(k, { ...old, ...filled, added: old.added, age: old.age, ships });
+  });
+  return [...by.values()];
+}
 // "loading" → "ok" or "failed". A failed read is said out loud, never shown as "no new makers".
 let sheetState = "loading";
 const sheetDone = (async () => {
@@ -483,9 +497,9 @@ const sheetDone = (async () => {
     if (!r.ok) throw new Error("HTTP " + r.status);
     const [head, ...rows] = parseCSV(await r.text());
     if (!head || !head.includes("name")) throw new Error("unexpected sheet shape");
-    const have = new Set(MAKERS.map(m => slug(m.name)));   // hand-written entries win; first approval of a name wins
-    rows.map(cols => rowToMaker(Object.fromEntries(head.map((h, i) => [h.trim(), cols[i] || ""]))))
-      .filter(m => m && !have.has(slug(m.name)) && have.add(slug(m.name)))
+    const have = new Set(MAKERS.map(m => slug(m.name)));   // hand-written entries win
+    mergeUpdates(rows.map(cols => rowToMaker(Object.fromEntries(head.map((h, i) => [h.trim(), cols[i] || ""])))).filter(Boolean))
+      .filter(m => !have.has(slug(m.name)))
       .forEach(m => MAKERS.push(m));
     sheetState = "ok";
   } catch (e) {
@@ -721,6 +735,13 @@ if (location.search.includes("check")) {
       ["csv: quotes, commas, newlines", JSON.stringify(parseCSV('a,"b,""c""\nd"\r\n1,2')) === JSON.stringify([["a", 'b,"c"\nd'], ["1", "2"]])],
       ["links: javascript: and data: blocked", safeUrl("javascript:alert(1)") === "" && safeUrl("JaVaScRiPt:alert(1)") === "" && safeUrl("data:text/html,x") === ""],
       ["links: bare domain and email fixed", safeUrl("youtube.com/@a") === "https://youtube.com/@a" && safeUrl("a@b.co") === "mailto:a@b.co"],
+      ["a maker's new project adds to their card", (() => {
+        const a = { name: "Test Kid", added: "2026-09", age: 16, crafts: ["Video"], blurb: "old", ships: [{ url: "https://a.com/" }], reach: undefined };
+        const b = { name: "Test  Kid".replace(/\s+/g, " "), added: "2026-11", age: 17, crafts: [], blurb: "new", ships: [{ url: "https://b.com/" }, { url: "https://a.com/" }] };
+        const [m, ...rest] = mergeUpdates([a, b]);
+        return !rest.length && m.added === "2026-09" && m.age === 16 && m.blurb === "new" && m.crafts[0] === "Video"
+          && m.ships.map(s => s.url).join() === "https://b.com/,https://a.com/";
+      })()],
       ["form row → maker", row.name === "Test Kid" && row.age === undefined && row.city === "Pune" && row.crafts.length === 2
         && row.ships.length === 1 && row.ships[0].label === "YouTube" && row.reach.url === "mailto:a@b.co"],
       ["month label", fmtMonth("2026-09") === "Sep 2026"],
