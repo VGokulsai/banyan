@@ -174,6 +174,7 @@
       <div class="chips" id="chips" hidden></div>
       <div class="viewing" id="viewing" hidden><span id="viewing-text"></span><button type="button" id="see-all">See everyone ↑</button></div>
       <div class="cards" id="cards"></div>
+      <p class="muted mono" id="sheet-note" hidden>Couldn't load the newest makers just now, so some may be missing. Refresh in a minute.</p>
     </section>
 
     <section class="sec block" id="hiring">
@@ -191,7 +192,7 @@
         <div class="step"><div class="num">03</div><div><b>You go live, with your own link</b><span>You get banyan/#your-name — put it in your bio, your applications, your DMs.</span></div></div>
       </div>
       <ul class="promise">
-        <li>You see and approve your card before it goes live.</li>
+        <li>Nothing goes live until you've said yes on the form and it's been checked by hand.</li>
         <li>Share only the contact you want. No phone numbers, ever.</li>
         <li>Want off? One message and it's gone within a day.</li>
       </ul>
@@ -335,22 +336,91 @@ const ICON_CARD = `<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="1.
 
 function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove("show"),1800); }
 
-// numbering: by join order (oldest = No. 001); display newest first
-const byJoin = [...MAKERS].sort((a, b) => a.added.localeCompare(b.added));
-byJoin.forEach((m, i) => m.no = i + 1);
-const display = [...byJoin].reverse();
-
-// the stamp — derived, never typed, and only shown once it's real
-if (MAKERS.length) {
-  $("#count").textContent = MAKERS.length;
-  $("#count-word").textContent = MAKERS.length === 1 ? "maker" : "makers";
-  $("#updated").textContent = fmtMonth(byJoin[byJoin.length - 1].added);
-  $("#stamp").hidden = false;
+// ─── Makers approved through the form ───
+// Form → Sheet → he types "yes" in the Approved column → the sheet's "Public" tab (public fields only)
+// is published as CSV → read here. The private tab (emails, parent answer) is never published.
+const PUBLIC_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTwb7Wf12fr-E6qRenxRWlSzNV-uHJ_LqZqswm7ddgkBSMfcE73vEwbAD6YSn1uhqzozYyOO_0ZJPoo/pub?gid=1921931271&single=true&output=csv";
+function parseCSV(t){   // RFC 4180: quoted fields, "" escapes, commas and newlines inside quotes
+  const rows = []; let row = [], cell = "", q = false;
+  for (let i = 0; i < t.length; i++) {
+    const ch = t[i];
+    if (q) { if (ch !== '"') cell += ch; else if (t[i + 1] === '"') { cell += '"'; i++; } else q = false; }
+    else if (ch === '"') q = true;
+    else if (ch === ",") { row.push(cell); cell = ""; }
+    else if (ch === "\n" || ch === "\r") { if (ch === "\r" && t[i + 1] === "\n") i++; row.push(cell); rows.push(row); row = []; cell = ""; }
+    else cell += ch;
+  }
+  if (cell || row.length) { row.push(cell); rows.push(row); }
+  return rows;
 }
+// makers type their own links, so only http(s) and mailto get through — never javascript: or data:
+function safeUrl(u){
+  u = String(u || "").trim().replace(/[.,;]+$/, "");
+  const mail = u.replace(/^mailto:/i, "");
+  if (/^[^\s@\/:]+@[^\s@\/:]+\.[a-z]{2,}$/i.test(mail)) return "mailto:" + mail;
+  if (!/^[a-z][a-z0-9+.-]*:/i.test(u)) u = "https://" + u;
+  try { const x = new URL(u); return /^https?:$/.test(x.protocol) && x.hostname.includes(".") ? x.href : ""; } catch { return ""; }
+}
+const PLATFORMS = { "youtube.com":"YouTube", "youtu.be":"YouTube", "github.com":"GitHub", "github.io":"Website", "behance.net":"Behance",
+  "instagram.com":"Instagram", "dribbble.com":"Dribbble", "linkedin.com":"LinkedIn", "drive.google.com":"Google Drive",
+  "x.com":"X", "twitter.com":"X", "soundcloud.com":"SoundCloud", "spotify.com":"Spotify", "medium.com":"Medium", "substack.com":"Substack" };
+const hostOf = u => new URL(u).hostname.replace(/^www\./, "");
+const platform = u => { const h = hostOf(u), k = Object.keys(PLATFORMS).find(k => h === k || h.endsWith("." + k)); return k ? PLATFORMS[k] : h; };
+const shortUrl = u => { const x = new URL(u); let p = x.pathname; try { p = decodeURIComponent(p); } catch {} return (hostOf(u) + p).replace(/\/$/, ""); };
+const tidyCase = s => s && s === s.toUpperCase() ? s.toLowerCase().replace(/(^|[\s-])\S/g, c => c.toUpperCase()) : s;
+function rowToMaker(o){
+  const name = (o.name || "").trim().replace(/\s+/g, " ");
+  // ponytail: a name with no latin letters has an empty slug and is skipped; give slug() a fallback when that happens
+  if (!slug(name) || !/^\d{4}-\d{2}$/.test(o.added || "")) return null;
+  const age = parseInt(o.age, 10);
+  const links = [...new Set((o.links || "").split(/[\s,]+/).map(safeUrl).filter(u => u.startsWith("http")))].slice(0, 6);
+  const reach = safeUrl((o.contact || "").split(/[\s,]+/)[0]);
+  return {
+    name, city: tidyCase((o.city || "").trim()), age: age >= 10 && age <= 25 ? age : undefined, added: o.added,
+    crafts: (o.crafts || "").split(/[,;\/]/).map(s => s.trim()).filter(Boolean),
+    blurb: (o.blurb || "").trim().replace(/\s+/g, " "),
+    ships: links.map(u => ({ label: platform(u), what: shortUrl(u), url: u })),
+    reach: reach ? { label: reach.startsWith("mailto:") ? "Email" : platform(reach), url: reach } : undefined
+  };
+}
+// "loading" → "ok" or "failed". A failed read is said out loud, never shown as "no new makers".
+let sheetState = "loading";
+const sheetDone = (async () => {
+  try {
+    const opts = window.AbortSignal && AbortSignal.timeout ? { signal: AbortSignal.timeout(10000) } : {};
+    const r = await fetch(PUBLIC_CSV + "&t=" + Math.floor(Date.now() / 60000), opts);   // per-minute, to skip stale caches
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    const [head, ...rows] = parseCSV(await r.text());
+    if (!head || !head.includes("name")) throw new Error("unexpected sheet shape");
+    const have = new Set(MAKERS.map(m => slug(m.name)));   // hand-written entries win; first approval of a name wins
+    rows.map(cols => rowToMaker(Object.fromEntries(head.map((h, i) => [h.trim(), cols[i] || ""]))))
+      .filter(m => m && !have.has(slug(m.name)) && have.add(slug(m.name)))
+      .forEach(m => MAKERS.push(m));
+    sheetState = "ok";
+  } catch (e) {
+    sheetState = "failed"; console.warn("banyan: couldn't read the sheet:", e);
+  }
+})();
 
-// cards
-const cards = $("#cards");
-display.forEach(m => {
+// numbering: by join order (oldest = No. 001); display newest first
+const cards = $("#cards"), chips = $("#chips");
+let byJoin = [], counts = {};
+function render(){
+  byJoin = [...MAKERS].sort((a, b) => a.added.localeCompare(b.added));   // stable: same month keeps list order
+  byJoin.forEach((m, i) => m.no = i + 1);
+
+  // the stamp — derived, never typed, and only shown once the sheet has actually been read
+  $("#stamp").hidden = sheetState !== "ok" || !MAKERS.length;
+  $("#sheet-note").hidden = sheetState !== "failed";
+  if (MAKERS.length) {
+    $("#count").textContent = MAKERS.length;
+    $("#count-word").textContent = MAKERS.length === 1 ? "maker" : "makers";
+    $("#updated").textContent = fmtMonth(byJoin[byJoin.length - 1].added);
+  }
+
+  // cards
+  cards.innerHTML = "";
+  [...byJoin].reverse().forEach((m, i) => {
   const id = slug(m.name), first = esc(m.name.split(" ")[0]);
   const el = document.createElement("article");
   el.className = "card"; el.id = id; el.dataset.crafts = m.crafts.join("|");
@@ -368,7 +438,21 @@ display.forEach(m => {
     `<div class="actions"><button type="button" class="act" data-share="${id}">${ICON_SHARE}Share</button>` +
     `<button type="button" class="act" data-card="${id}">${ICON_CARD}Get your card</button></div>`;
   cards.appendChild(el);
-});
+  reveal(el, (i % 4) * 70);
+  });
+
+  // craft filter — only when there are 2+ crafts, so it never pretends
+  counts = {};
+  MAKERS.forEach(m => m.crafts.forEach(c => counts[c] = (counts[c] || 0) + 1));
+  chips.innerHTML = "";
+  chips.hidden = Object.keys(counts).length < 2;
+  if (!chips.hidden) {
+    const chip = (label, n) => { const b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.dataset.craft = label; b.innerHTML = `${esc(label)}<span>${n}</span>`; chips.appendChild(b); return b; };
+    chip("All", MAKERS.length).classList.add("on");
+    Object.keys(counts).sort().forEach(c => chip(c, counts[c]));
+  }
+  setTimeout(() => cards.querySelectorAll(".reveal:not(.in)").forEach(el => el.classList.add("in")), 2500);
+}
 
 // share: phone share sheet first, copy link as fallback
 async function shareUrl(url, title){
@@ -451,21 +535,11 @@ cards.addEventListener("click", e => {
 });
 $("#send-page").addEventListener("click", () => shareUrl(SITE, "Banyan — young makers in India, seen"));
 
-// craft filter — only when there are 2+ crafts, so it never pretends
-const counts = {};
-MAKERS.forEach(m => m.crafts.forEach(c => counts[c] = (counts[c] || 0) + 1));
-const chips = $("#chips");
 function filterTo(craft){
   chips.querySelectorAll(".chip").forEach(c => c.classList.toggle("on", c.dataset.craft === craft));
   cards.querySelectorAll(".card").forEach(c => { c.hidden = craft !== "All" && !c.dataset.crafts.split("|").includes(craft); });
 }
-if (Object.keys(counts).length > 1) {
-  const chip = (label, n) => { const b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.dataset.craft = label; b.innerHTML = `${esc(label)}<span>${n}</span>`; chips.appendChild(b); return b; };
-  chip("All", MAKERS.length).classList.add("on");
-  Object.keys(counts).sort().forEach(c => chip(c, counts[c]));
-  chips.hidden = false;
-  chips.addEventListener("click", e => { const c = e.target.closest(".chip"); if (c) filterTo(c.dataset.craft); });
-}
+chips.addEventListener("click", e => { const c = e.target.closest(".chip"); if (c) filterTo(c.dataset.craft); });
 
 $("#submit").href = SUBMIT_URL;
 
@@ -475,7 +549,7 @@ const io = "IntersectionObserver" in window ? new IntersectionObserver(es => {
 }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }) : null;
 function reveal(el, d = 0){ if (!el) return; el.classList.add("reveal"); if (d) el.style.transitionDelay = d + "ms"; io ? io.observe(el) : el.classList.add("in"); }
 ["h1", ".tagline", ".stamp"].forEach((s, i) => reveal($(s), i * 80));
-document.querySelectorAll(".sec-h, #cards .card, .block > p, .step, .promise, .cta, footer").forEach((el, i) => reveal(el, (i % 4) * 70));
+document.querySelectorAll(".sec-h, .block > p, .step, .promise, .cta, footer").forEach((el, i) => reveal(el, (i % 4) * 70));
 setTimeout(() => document.querySelectorAll(".reveal:not(.in)").forEach(el => el.classList.add("in")), 2500);
 
 // a maker's own link: #their-name → scroll, highlight, and say whose spot this is
@@ -496,12 +570,17 @@ $("#see-all").addEventListener("click", () => {
   $("#makers").scrollIntoView({ behavior: "smooth" });
 });
 window.addEventListener("hashchange", goToHash);
-goToHash();
+render(); goToHash();
+// re-draw once the sheet answers; only re-jump if the link's maker wasn't there the first time
+sheetDone.then(() => { const missed = $("#viewing").hidden; render(); if (missed) goToHash(); });
 
 // self-check: index.html?check  (result in the tab title)
 if (location.search.includes("check")) {
   (async () => {
+    await sheetDone; render();
     const c = await makeCard(MAKERS[0]);
+    const row = rowToMaker({ added: "2026-09", name: " Test  Kid ", age: "99", city: "PUNE", crafts: "Video, Design", blurb: "x",
+      links: "youtube.com/@a javascript:alert(1) youtube.com/@a", contact: "a@b.co" });
     const long = "A very long description of a thing someone made that keeps going well past two full lines of text on the card";
     const worst = await makeCard({ name: "Venkata Subrahmanya Lakshminarayana", city: "Visakhapatnam", age: 17, added: "2026-09", no: 12,
       crafts: ["Video", "Design", "Music"], ships: [1, 2, 3].map(i => ({ label: "project-" + i, what: long })) });
@@ -514,7 +593,15 @@ if (location.search.includes("check")) {
       ["filter hides non-matching", (() => { filterTo("__none__"); const h = [...cards.querySelectorAll(".card")].every(x => x.hidden); filterTo("All"); return h; })()],
       ["escapes html", esc("<b>") === "&lt;b&gt;"],
       ["submit goes to the form", $("#submit").getAttribute("href") === SUBMIT_URL],
-      ["stamp shows the real count (no false zero)", !$("#stamp").hidden && $("#count").textContent === String(MAKERS.length)],
+      ["stamp shows the real count, or hides and says it couldn't look", sheetState === "ok"
+        ? !$("#stamp").hidden && $("#count").textContent === String(MAKERS.length) && $("#sheet-note").hidden
+        : $("#stamp").hidden && !$("#sheet-note").hidden],
+      ["sheet was read", sheetState === "ok"],
+      ["csv: quotes, commas, newlines", JSON.stringify(parseCSV('a,"b,""c""\nd"\r\n1,2')) === JSON.stringify([["a", 'b,"c"\nd'], ["1", "2"]])],
+      ["links: javascript: and data: blocked", safeUrl("javascript:alert(1)") === "" && safeUrl("JaVaScRiPt:alert(1)") === "" && safeUrl("data:text/html,x") === ""],
+      ["links: bare domain and email fixed", safeUrl("youtube.com/@a") === "https://youtube.com/@a" && safeUrl("a@b.co") === "mailto:a@b.co"],
+      ["form row → maker", row.name === "Test Kid" && row.age === undefined && row.city === "Pune" && row.crafts.length === 2
+        && row.ships.length === 1 && row.ships[0].label === "YouTube" && row.reach.url === "mailto:a@b.co"],
       ["month label", fmtMonth("2026-09") === "Sep 2026"],
       ["numbers pad to 3", pad3(7) === "007"],
       ["first maker is No. 001", byJoin[0].no === 1],
