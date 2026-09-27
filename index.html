@@ -31,7 +31,8 @@
   body{margin:0;background:var(--bg);color:var(--ink);
     font:17px/1.6 "Instrument Sans","Segoe UI",system-ui,sans-serif;
     -webkit-font-smoothing:antialiased;display:flex;justify-content:center}
-  .wrap{width:100%;max-width:760px;padding:32px 20px 80px}
+  .wrap{width:100%;max-width:1120px;padding:32px 20px 80px}
+  .block p{max-width:62ch}   /* wide page, comfortable lines */
   .mono,.sec-h h2{font-family:"JetBrains Mono",ui-monospace,monospace;text-transform:uppercase;letter-spacing:.1em;font-size:.7rem;font-weight:400;color:var(--muted);margin:0}
   a{color:inherit}
   button{font:inherit}
@@ -64,6 +65,15 @@
   .hero-tree{margin-top:30px}
   .hero-tree svg{display:block;width:min(100%,540px);height:auto;margin:0 auto;overflow:visible}
   .hero + .sec{margin-top:40px}
+  /* laptops: tree beside the headline, cards two across, Join in two columns. Phones stay stacked. */
+  @media (min-width:900px){
+    .wrap{padding:36px 32px 90px}
+    .hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:48px;align-items:center;margin-top:44px}
+    h1{font-size:clamp(3.4rem,5.2vw,4.7rem)}
+    .hero-tree{margin-top:0}
+    .hero-tree svg{width:100%}
+    .hero + .sec{margin-top:56px}
+  }
   /* the hero banyan grows once on load; with reduced motion it's simply there */
   @media (prefers-reduced-motion: no-preference){
     .grow .g-s{stroke-dasharray:1 2;animation:draw var(--t) cubic-bezier(.45,.05,.35,1) var(--d) both}
@@ -174,6 +184,13 @@
     .mark{font-size:1.8rem}
   }
 
+  /* laptops, part two (kept last so it wins over the base card rules): cards two across, Join in two columns */
+  @media (min-width:900px){
+    .cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-items:start}
+    .join-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:44px;align-items:start}
+    .join-grid .promise{margin-top:6px}
+  }
+
   /* restrained scroll reveal, off for reduced-motion */
   @media (prefers-reduced-motion: no-preference){
     .reveal{opacity:0;transform:translateY(18px);
@@ -220,12 +237,14 @@
 
     <section class="sec block" id="join">
       <div class="sec-h"><h2>Get on Banyan</h2><span class="line"></span></div>
+      <div class="join-grid"><div>
       <p>Code, design, video editing, writing, music — if you made it and it's out in the world, it counts.</p>
       <div class="steps">
         <div class="step"><div class="num">01</div><div><b>Send your work</b><span>Fill the short form: who you are, your craft, and links to what you've shipped.</span></div></div>
         <div class="step"><div class="num">02</div><div><b>A real person looks at it</b><span>Every submission is read by hand. The only bar: it's real and it's yours. Real means a stranger can open it — a live link, a repo, a video, a published piece. School projects count if they're public.</span></div></div>
         <div class="step"><div class="num">03</div><div><b>You go live, with your own link</b><span>You get banyan/#your-name — put it in your bio, your applications, your DMs.</span></div></div>
       </div>
+      </div><div>
       <ul class="promise">
         <li>Nothing goes live until you've said yes on the form and it's been checked by hand.</li>
         <li>Share only the contact you want. No phone numbers, ever.</li>
@@ -237,6 +256,7 @@
         <p>No degree, no connections, no fee. Just proof.</p>
         <a id="submit" href="#" target="_blank" rel="noopener">Submit your work →</a>
       </div>
+      </div></div>
     </section>
 
     <footer>
