@@ -681,6 +681,14 @@ render(); goToHash();
 // re-draw once the sheet answers; only re-jump if the link's maker wasn't there the first time
 sheetDone.then(() => { const missed = $("#viewing").hidden; render(); if (missed) goToHash(); });
 
+// visitor counts via GoatCounter (no cookies, no banner). Put the account's code name here to switch it on; empty = off.
+const GOATCOUNTER = "";
+if (GOATCOUNTER && !location.search.includes("check")) {
+  const s = document.createElement("script");
+  s.async = true; s.dataset.goatcounter = `https://${GOATCOUNTER}.goatcounter.com/count`; s.src = "https://gc.zgo.at/count.js";
+  document.head.appendChild(s);
+}
+
 // self-check: index.html?check  (result in the tab title)
 if (location.search.includes("check")) {
   (async () => {
