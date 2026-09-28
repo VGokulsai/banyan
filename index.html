@@ -243,7 +243,7 @@
         <div class="step"><div class="num">01</div><div><b>Send your work</b><span>Fill the short form: who you are, your craft, and links to what you've shipped.</span></div></div>
         <div class="step"><div class="num">02</div><div><b>A real person looks at it</b><span>Every submission is read by hand. The only bar: it's real and it's yours. Real means a stranger can open it — a live link, a repo, a video, a published piece. School projects count if they're public.</span></div></div>
         <div class="step"><div class="num">03</div><div><b>You go live, with your own link</b><span>You get banyan/#your-name — put it in your bio, your applications, your DMs.</span></div></div>
-        <div class="step"><div class="num">04</div><div><b>Made something new? Add it</b><span>Tap <i>Add a project</i> on your card. Your details are already filled in; just add the new link. After a quick check it goes to the top of your card, and your old work stays.</span></div></div>
+        <div class="step"><div class="num">04</div><div><b>Made something new? Add it</b><span>Open the private link you got when you joined and tap <i>Add a project</i>. Your details are already filled in; just add the new link. After a quick check it goes to the top of your card, and your old work stays.</span></div></div>
       </div>
       </div><div>
       <ul class="promise">
@@ -511,7 +511,10 @@ const sheetDone = (async () => {
 
 // "Add a project" on a card: the same form, already filled with what's on the card, so a maker only adds the new link,
 // their email and their yes. It still goes through the hand check, which is also what stops a stranger editing someone's card.
-const FORM_IDS = { name: 74019584, city: 1281113680, craft: 1867988722, blurb: 1860860792, contact: 223586296 };
+// The button only shows on a maker's own card, on the private link Gokul sends them: banyan/?edit#their-name.
+// That hides it, it doesn't lock it; what actually protects a card is the hand check (private email must match their first entry).
+const editingSlug = () => new URLSearchParams(location.search).has("edit") ? decodeURIComponent(location.hash.slice(1)) : "";
+const FORM_IDS ={ name: 74019584, city: 1281113680, craft: 1867988722, blurb: 1860860792, contact: 223586296 };
 const FORM_CRAFTS = ["Code", "Design", "Video", "Writing", "Music"];
 function addProjectUrl(m){
   const q = new URLSearchParams({ usp: "pp_url" }), e = k => "entry." + FORM_IDS[k];
@@ -576,7 +579,7 @@ function render(){
     (m.reach ? `<div class="reach">Want to work with ${first}? <a href="${esc(m.reach.url)}" target="_blank" rel="noopener">${esc(m.reach.label)} →</a></div>` : "") +
     `<div class="actions"><button type="button" class="act" data-share="${id}">${ICON_SHARE}Share</button>` +
     `<button type="button" class="act" data-card="${id}">${ICON_CARD}Get your card</button>` +
-    `<a class="act" href="${esc(addProjectUrl(m))}" target="_blank" rel="noopener" title="For ${first}: adds a new project to this card after a quick check">${ICON_ADD}Add a project</a></div>`;
+    (editingSlug() === id ? `<a class="act" href="${esc(addProjectUrl(m))}" target="_blank" rel="noopener">${ICON_ADD}Add a project</a>` : "") + `</div>`;
   cards.appendChild(el);
   reveal(el, (i % 4) * 70);
   });
@@ -699,7 +702,9 @@ function goToHash(){
   if (!card || !card.classList.contains("card")) { $("#viewing").hidden = true; return; }
   filterTo("All"); card.classList.add("in");
   const m = MAKERS.find(x => slug(x.name) === id);
-  $("#viewing-text").textContent = "You're viewing " + m.name.split(" ")[0] + "'s spot.";
+  $("#viewing-text").textContent = editingSlug() === id
+    ? "Your private link, " + m.name.split(" ")[0] + ". Add a project from your card. Keep this link to yourself."
+    : "You're viewing " + m.name.split(" ")[0] + "'s spot.";
   $("#viewing").hidden = false;
   card.scrollIntoView({ behavior: "smooth", block: "center" });
   card.classList.add("flash"); setTimeout(() => card.classList.remove("flash"), 2200);
@@ -768,7 +773,10 @@ if (location.search.includes("check")) {
           && craft.includes("Video") && craft.includes("__other_option__") && p.get("entry.1867988722.other_option_response") === "Animation"
           && p.get("entry.223586296") === "a@b.co" && !p.has("entry.680607256") && !p.has("entry.682465784") && !p.has("entry.1965610453");
       })()],
-      ["every card has its add-a-project link", [...cards.querySelectorAll(".card")].every(c => c.querySelector('a.act[href*="entry.74019584"]'))],
+      ["add-a-project: hidden from visitors, only on the maker's own card with their edit link", (() => {
+        const btns = [...cards.querySelectorAll('a.act[href*="entry.74019584"]')], ed = editingSlug();
+        return ed ? btns.length === 1 && btns[0].closest(".card").id === ed : btns.length === 0;
+      })()],
       ["form row → maker", row.name === "Test Kid" && row.age === undefined && row.city === "Pune" && row.crafts.length === 2
         && row.ships.length === 1 && row.ships[0].label === "YouTube" && row.reach.url === "mailto:a@b.co"],
       ["month label", fmtMonth("2026-09") === "Sep 2026"],
