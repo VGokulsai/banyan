@@ -493,8 +493,9 @@ function mergeUpdates(list){
 let sheetState = "loading";
 const sheetDone = (async () => {
   try {
-    const opts = window.AbortSignal && AbortSignal.timeout ? { signal: AbortSignal.timeout(10000) } : {};
-    const r = await fetch(PUBLIC_CSV + "&t=" + Math.floor(Date.now() / 60000), opts);   // per-minute, to skip stale caches
+    const get = () => fetch(PUBLIC_CSV + "&t=" + Math.floor(Date.now() / 60000),   // per-minute, to skip stale caches
+      window.AbortSignal && AbortSignal.timeout ? { signal: AbortSignal.timeout(12000) } : {});
+    let r; try { r = await get(); } catch { r = await get(); }   // one retry: Google's sheet sometimes answers slowly
     if (!r.ok) throw new Error("HTTP " + r.status);
     const [head, ...rows] = parseCSV(await r.text());
     if (!head || !head.includes("name")) throw new Error("unexpected sheet shape");
