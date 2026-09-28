@@ -3,7 +3,7 @@
 // the send time goes in the "Link sent" column, and a row with anything in it is never emailed again.
 // Setup: paste this in, run setup() once, and allow the permissions it asks for (send email as you, edit this sheet).
 
-const SITE = "https://vgokulsai.github.io/banyan/";
+const SITE = "https://banyanmakers.pages.dev/";
 const SHEET = "Form Responses 1";
 const COL = { name: 2, email: 9, consent: 10, approved: 12, sent: 13 };   // B, I, J, L, M
 

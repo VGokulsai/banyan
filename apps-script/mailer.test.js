@@ -29,8 +29,8 @@ const sh = fakeSheet([hdr,
 assert.strictEqual(ctx.slug("Priya Rao-Sharma!"), "priya-rao-sharma", "slug must match index.html");
 assert.match(ctx.sendFor(sh, 2, false), /^sent/);
 assert.strictEqual(sent[0].subject, "You're on Banyan");
-assert.ok(sent[0].body.includes("https://vgokulsai.github.io/banyan/#ram-chetan"));
-assert.ok(sent[0].body.includes("https://vgokulsai.github.io/banyan/?edit#ram-chetan"));
+assert.ok(sent[0].body.includes("https://banyanmakers.pages.dev/#ram-chetan"));
+assert.ok(sent[0].body.includes("https://banyanmakers.pages.dev/?edit#ram-chetan"));
 assert.match(ctx.sendFor(sh, 2, false), /already sent/, "never emails the same row twice");
 assert.match(ctx.sendFor(sh, 3, false), /not approved/);
 assert.match(ctx.sendFor(sh, 4, false), /^sent/);
