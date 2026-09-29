@@ -446,12 +446,28 @@ const heroLeaves = [...document.querySelectorAll("#hero-tree .g-pop")].map(el =>
 const leavesNear = (x, y, r) => heroLeaves.filter(l => Math.hypot(l.x - x, l.y - y) < r);
 if (matchMedia("(hover: hover) and (pointer: fine)").matches && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
   const svg = document.querySelector("#hero-tree svg");
-  let px = null;
+  let px = null, lastFall = 0, falling = 0;
+  // now and then a leaf lets go and drifts to the ground. It's a copy, so the canopy never thins.
+  function dropLeaf(l, dir){
+    lastFall = performance.now(); falling++;
+    const wrap = document.createElementNS("http://www.w3.org/2000/svg", "g"), g = l.el.parentNode.cloneNode(true), leaf = g.firstChild;
+    leaf.removeAttribute("class"); leaf.removeAttribute("style");   // no replay of the grow-in pop
+    wrap.appendChild(g); svg.appendChild(wrap);
+    const dy = 97 - l.y, dx = dir * (4 + Math.random() * 6), ms = 2400 + Math.random() * 900;
+    wrap.animate([{ transform: "translate(0,0)", opacity: 1 },
+                  { transform: `translate(${-dx * 0.6}px,${dy * 0.35}px)`, opacity: 1, offset: 0.35 },
+                  { transform: `translate(${dx * 0.5}px,${dy * 0.7}px)`, opacity: 0.9, offset: 0.7 },
+                  { transform: `translate(${dx}px,${dy}px)`, opacity: 0 }], { duration: ms, easing: "ease-in" })
+      .finished.then(() => { wrap.remove(); falling--; });
+    leaf.animate([{ transform: "rotate(0deg)" }, { transform: `rotate(${dir * 200}deg)` }], { duration: ms, easing: "ease-in-out" });
+  }
   setTimeout(() => svg.addEventListener("pointermove", e => {
     const pt = new DOMPoint(e.clientX, e.clientY).matrixTransform(svg.getScreenCTM().inverse());
     const dir = px === null || e.clientX >= px ? 1 : -1; px = e.clientX;
     const now = performance.now();
-    leavesNear(pt.x, pt.y, 8).forEach(l => {   // radius 8 moves about 12 leaves: a breeze, not a shake
+    const near = leavesNear(pt.x, pt.y, 8);
+    if (near.length && now - lastFall > 600 && falling < 4 && Math.random() < 0.3) dropLeaf(near[Math.floor(Math.random() * near.length)], dir);
+    near.forEach(l => {   // radius 8 moves about 12 leaves: a breeze, not a shake
       if (now - l.last < 900) return;   // one rustle at a time per leaf
       l.last = now;
       const a = dir * (9 + Math.random() * 6);
