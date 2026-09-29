@@ -437,6 +437,31 @@ function drawTree(ctx, { ring = false, x, y, height }){
 document.getElementById("logo").innerHTML = treeSVG({ cls: "logo" });
 document.getElementById("hero-tree").innerHTML = treeSVG({ tree: HERO, grow: true });
 
+// The tree rustles under your cursor: leaves near it sway like a breeze went through, then settle.
+// Mouse and trackpad only (phones can't hover), off with reduced motion, and only after the tree has finished growing.
+const heroLeaves = [...document.querySelectorAll("#hero-tree .g-pop")].map(el => {
+  const m = /translate\(([-\d.]+) ([-\d.]+)\)/.exec(el.parentNode.getAttribute("transform") || "");
+  return m && { el, x: +m[1], y: +m[2], last: 0 };
+}).filter(Boolean);
+const leavesNear = (x, y, r) => heroLeaves.filter(l => Math.hypot(l.x - x, l.y - y) < r);
+if (matchMedia("(hover: hover) and (pointer: fine)").matches && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const svg = document.querySelector("#hero-tree svg");
+  let px = null;
+  setTimeout(() => svg.addEventListener("pointermove", e => {
+    const pt = new DOMPoint(e.clientX, e.clientY).matrixTransform(svg.getScreenCTM().inverse());
+    const dir = px === null || e.clientX >= px ? 1 : -1; px = e.clientX;
+    const now = performance.now();
+    leavesNear(pt.x, pt.y, 8).forEach(l => {   // radius 8 moves about 12 leaves: a breeze, not a shake
+      if (now - l.last < 900) return;   // one rustle at a time per leaf
+      l.last = now;
+      const a = dir * (9 + Math.random() * 6);
+      l.el.animate([{ transform: "rotate(0deg)" }, { transform: `rotate(${a}deg)` }, { transform: `rotate(${-a * 0.55}deg)` },
+                    { transform: `rotate(${a * 0.25}deg)` }, { transform: "rotate(0deg)" }],
+                   { duration: 900 + Math.random() * 300, easing: "ease-out" });
+    });
+  }), 3800);
+}
+
 const $ = s => document.querySelector(s);
 const slug = n => n.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -809,6 +834,10 @@ if (location.search.includes("check")) {
         const s = JSON.stringify(TREE.prims.map(p => [p.d, p.w || 0, p.fill || "", p.t || 0, p.op || 0]));
         const h = new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s)));
         return [...h].slice(0, 8).map(b => b.toString(16).padStart(2, "0")).join("") === "fd9f202da5beaa1a";
+      })()],
+      ["tree rustle finds the leaves under the cursor, and none far away", (() => {
+        const l = heroLeaves[0];
+        return heroLeaves.length > 50 && leavesNear(l.x, l.y, 8).includes(l) && leavesNear(-999, -999, 8).length === 0;
       })()],
       ["hero tree drawn, every hanging root reaches the ground", !!document.querySelector("#hero-tree svg path")
         && HERO.prims.filter(p => p.kind === "root").length > 10 && HERO.prims.filter(p => p.kind === "root").every(p => p.d.endsWith(" 98"))],
