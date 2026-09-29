@@ -552,24 +552,34 @@ function mergeUpdates(list){
   return [...by.values()];
 }
 // "loading" → "ok" or "failed". A failed read is said out loud, never shown as "no new makers".
-let sheetState = "loading";
-const sheetDone = (async () => {
-  try {
-    const get = () => fetch(PUBLIC_CSV + "&t=" + Math.floor(Date.now() / 60000),   // per-minute, to skip stale caches
-      window.AbortSignal && AbortSignal.timeout ? { signal: AbortSignal.timeout(12000) } : {});
-    let r; try { r = await get(); } catch { r = await get(); }   // one retry: Google's sheet sometimes answers slowly
-    if (!r.ok) throw new Error("HTTP " + r.status);
-    const [head, ...rows] = parseCSV(await r.text());
-    if (!head || !head.includes("name")) throw new Error("unexpected sheet shape");
-    const have = new Set(MAKERS.map(m => slug(m.name)));   // hand-written entries win
-    mergeUpdates(rows.map(cols => rowToMaker(Object.fromEntries(head.map((h, i) => [h.trim(), cols[i] || ""])))).filter(Boolean))
-      .filter(m => !have.has(slug(m.name)))
-      .forEach(m => MAKERS.push(m));
-    sheetState = "ok";
-  } catch (e) {
-    sheetState = "failed"; console.warn("banyan: couldn't read the sheet:", e);
-  }
-})();
+// Makers come from two places. makers.csv is Banyan's own copy of the public sheet, refreshed every few
+// minutes by a GitHub Action: same site, so it loads fast and no blocker or office network can stop it.
+// The live Google sheet is read too, so a brand-new approval still shows the moment it's published.
+let sheetState = "loading", fromCopy = false, fromLive = false;
+const STATIC_MAKERS = [...MAKERS];
+function useCSV(text){
+  const [head, ...rows] = parseCSV(text);
+  if (!head || !head.includes("name")) throw new Error("unexpected sheet shape");
+  const have = new Set(STATIC_MAKERS.map(m => slug(m.name)));   // hand-written entries win
+  const fromSheet = mergeUpdates(rows.map(cols => rowToMaker(Object.fromEntries(head.map((h, i) => [h.trim(), cols[i] || ""])))).filter(Boolean))
+    .filter(m => !have.has(slug(m.name)));
+  MAKERS.splice(0, MAKERS.length, ...STATIC_MAKERS, ...fromSheet);
+}
+async function getText(url){
+  const opts = window.AbortSignal && AbortSignal.timeout ? { signal: AbortSignal.timeout(12000) } : {};
+  const r = await fetch(url + (url.includes("?") ? "&" : "?") + "t=" + Math.floor(Date.now() / 60000), opts);   // per-minute, skips stale caches
+  if (!r.ok) throw new Error("HTTP " + r.status);
+  return r.text();
+}
+const copyDone = getText("makers.csv")
+  .then(t => { if (!fromLive) { useCSV(t); fromCopy = true; sheetState = "ok"; render(); } })
+  .catch(e => console.warn("banyan: couldn't read makers.csv:", e));
+const liveDone = (async () => {
+  let t; try { t = await getText(PUBLIC_CSV); } catch { t = await getText(PUBLIC_CSV); }   // one retry: Google sometimes answers slowly
+  useCSV(t); fromLive = true; sheetState = "ok";
+})().catch(e => console.warn("banyan: couldn't read the live sheet:", e));
+// "loading" → "ok" or "failed". Failed only if BOTH sources failed, and then it's said out loud, never shown as "no new makers".
+const sheetDone = Promise.all([copyDone, liveDone]).then(() => { if (sheetState === "loading") sheetState = "failed"; });
 
 // "Add a project" on a card: the same form, already filled with what's on the card, so a maker only adds the new link,
 // their email and their yes. It still goes through the hand check, which is also what stops a stranger editing someone's card.
@@ -818,6 +828,7 @@ if (location.search.includes("check")) {
         ? !$("#stamp").hidden && $("#count").textContent === String(MAKERS.length) && $("#sheet-note").hidden
         : $("#stamp").hidden && !$("#sheet-note").hidden],
       ["sheet was read", sheetState === "ok"],
+      ["makers load from Banyan's own copy (works even if Google is blocked)", fromCopy || fromLive && location.protocol === "file:"],
       ["csv: quotes, commas, newlines", JSON.stringify(parseCSV('a,"b,""c""\nd"\r\n1,2')) === JSON.stringify([["a", 'b,"c"\nd'], ["1", "2"]])],
       ["links: javascript: and data: blocked", safeUrl("javascript:alert(1)") === "" && safeUrl("JaVaScRiPt:alert(1)") === "" && safeUrl("data:text/html,x") === ""],
       ["links: bare domain and email fixed", safeUrl("youtube.com/@a") === "https://youtube.com/@a" && safeUrl("a@b.co") === "mailto:a@b.co"],

@@ -1,0 +1,38 @@
+# Keeps makers.csv, Banyan's own copy of the public maker sheet, up to date.
+# The site reads this copy first because it's on the same site: fast, and nothing can block it.
+# It never overwrites the copy with an empty or broken download: a failed fetch is not "no makers".
+name: Refresh makers copy
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"   # GitHub may run it late; the site also reads the live sheet, so that's fine
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: makers-copy
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download the public sheet
+        run: |
+          curl -sSfL --retry 3 --max-time 30 \
+            "https://docs.google.com/spreadsheets/d/e/2PACX-1vTwb7Wf12fr-E6qRenxRWlSzNV-uHJ_LqZqswm7ddgkBSMfcE73vEwbAD6YSn1uhqzozYyOO_0ZJPoo/pub?gid=1921931271&single=true&output=csv" \
+            -o new.csv
+          head -1 new.csv | tr -d '\r' | grep -qx 'added,name,age,city,crafts,blurb,links,contact' \
+            || { echo "Unexpected header, keeping the old copy"; exit 1; }
+          mv new.csv makers.csv
+      - name: Commit if it changed
+        run: |
+          if git diff --quiet -- makers.csv; then echo "No change"; exit 0; fi
+          git config user.name "banyan-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add makers.csv
+          git commit -m "Refresh makers copy"
+          git push
