@@ -114,6 +114,16 @@
     transition:box-shadow .4s,border-color .4s}
   .card[hidden]{display:none}
   .card.flash{border-color:var(--moss);box-shadow:0 0 0 4px rgba(119,142,105,.25)}
+  /* dappled light, under the banyan: sun through leaves on the card under your cursor, below the text.
+     Laptops only, nothing with reduced motion; --mx/--my/--dapple and .lit come from the script. */
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference){
+    .card{position:relative;isolation:isolate}
+    .card::before,.card::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-1;opacity:0;transition:opacity .3s ease}
+    .card::before{background:radial-gradient(circle 140px at var(--mx) var(--my),rgba(255,241,205,.55),rgba(255,241,205,.22) 55%,rgba(255,241,205,0))}
+    .card::after{background:var(--dapple) calc(var(--mx) * .06) calc(var(--my) * .06);filter:blur(1.2px);
+      -webkit-mask:radial-gradient(circle 140px at var(--mx) var(--my),#000 25%,transparent);mask:radial-gradient(circle 140px at var(--mx) var(--my),#000 25%,transparent)}
+    .card.lit::before,.card.lit::after{opacity:1}
+  }
   .no{font-family:"JetBrains Mono",monospace;font-size:.7rem;color:var(--muted);letter-spacing:.08em}
   .card h3{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:1.7rem;line-height:1.1;margin:2px 0 0}
   .card .meta{font-family:"JetBrains Mono",monospace;font-size:.72rem;color:var(--muted);margin-top:5px;text-transform:uppercase;letter-spacing:.06em}
@@ -751,6 +761,31 @@ cards.addEventListener("click", e => {
   if (s) { const m = MAKERS.find(x => slug(x.name) === s.dataset.share); shareUrl(SITE + "#" + s.dataset.share, m.name + " on Banyan"); }
   if (g) { const m = MAKERS.find(x => slug(x.name) === g.dataset.card); giveCard(m); }
 });
+
+// Dappled light: sun through the banyan falls on the card under your cursor. Same gate as the rustle; the leaves are the tree's own LEAF.
+const DAPPLE = matchMedia("(hover: hover) and (pointer: fine)").matches && !matchMedia("(prefers-reduced-motion: reduce)").matches;
+if (DAPPLE) {
+  const r = rng(7), tile = Array.from({ length: 9 }, (_, i) =>   // one leaf per cell of a 3x3 grid, jittered, so they spread instead of clumping
+    `<path d="${LEAF}" transform="translate(${(i % 3 * 46 + 10 + r() * 26).toFixed(1)} ${((i / 3 | 0) * 46 + 10 + r() * 26).toFixed(1)}) rotate(${(r() * 360) | 0}) scale(${(2 + r() * 0.9).toFixed(2)})"/>`).join("");
+  cards.style.setProperty("--dapple", `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="140" height="140" fill="${PAL.juniper}" fill-opacity=".07">${tile}</svg>`)}")`);
+  let lit = null, raf = 0, last;
+  const light = (card, x, y) => {
+    if (lit && lit !== card) lit.classList.remove("lit");
+    if ((lit = card)) { card.style.setProperty("--mx", Math.round(x) + "px"); card.style.setProperty("--my", Math.round(y) + "px"); card.classList.add("lit"); }
+  };
+  cards.addEventListener("pointermove", e => {
+    last = e;
+    raf = raf || requestAnimationFrame(() => {
+      raf = 0;
+      const c = last.target.closest(".card"), b = c && c.getBoundingClientRect();
+      light(c, c && last.clientX - b.left, c && last.clientY - b.top);
+    });
+  });
+  cards.addEventListener("pointerleave", () => { cancelAnimationFrame(raf); raf = 0; light(null); });
+  // debug: ?light=X,Y lights the first card at that spot, so a still screenshot can show it
+  const at = new URLSearchParams(location.search).get("light");
+  if (at) sheetDone.then(() => setTimeout(() => { const [x, y] = at.split(",").map(Number), c = cards.querySelector(".card"); if (c) light(c, x || 0, y || 0); }));   // after the sheet's re-render
+}
 $("#send-page").addEventListener("click", () => shareUrl(SITE, "Banyan — young makers in India, seen"));
 
 function filterTo(craft){
@@ -873,6 +908,14 @@ if (location.search.includes("check")) {
       ["tree rustle finds the leaves under the cursor, and none far away", (() => {
         const l = heroLeaves[0];
         return heroLeaves.length > 50 && leavesNear(l.x, l.y, 8).includes(l) && leavesNear(-999, -999, 8).length === 0;
+      })()],
+      ["dappled light follows the cursor onto the card (laptops only, else nothing attached)", await (async () => {
+        const card = cards.querySelector(".card"), b = card.getBoundingClientRect();
+        card.dispatchEvent(new PointerEvent("pointermove", { bubbles: true, clientX: b.left + 40, clientY: b.top + 30 }));
+        await new Promise(requestAnimationFrame);
+        const lit = card.classList.contains("lit"), mx = card.style.getPropertyValue("--mx"), my = card.style.getPropertyValue("--my");
+        return DAPPLE ? lit && mx === "40px" && my === "30px" && !!cards.style.getPropertyValue("--dapple")
+                      : !lit && !mx && !cards.style.getPropertyValue("--dapple");
       })()],
       ["hero tree drawn, every hanging root reaches the ground", !!document.querySelector("#hero-tree svg path")
         && HERO.prims.filter(p => p.kind === "root").length > 10 && HERO.prims.filter(p => p.kind === "root").every(p => p.d.endsWith(" 98"))],
