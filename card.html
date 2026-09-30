@@ -99,8 +99,17 @@ function showCount(n){
   document.getElementById("count").hidden = !ok;
   if (ok) { document.getElementById("count-n").textContent = n; document.getElementById("count-word").textContent = n === 1 ? "maker" : "makers"; }
 }
-const counted = Promise.all([getText("./"), getText("makers.csv")])
-  .then(([html, csv]) => showCount(countMakers(csv, handNames(html))))
+// Live sheet first: GitHub runs the job that refreshes makers.csv hours late, so the copy can be behind.
+// The copy is the fallback for networks that block Google.
+const LIVE_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTwb7Wf12fr-E6qRenxRWlSzNV-uHJ_LqZqswm7ddgkBSMfcE73vEwbAD6YSn1uhqzozYyOO_0ZJPoo/pub?gid=1921931271&single=true&output=csv";
+const counted = getText("./")
+  .then(async html => {
+    const hand = handNames(html);
+    let n = null;
+    try { n = countMakers(await getText(LIVE_CSV), hand); } catch (e) { console.warn("banyan card: live sheet unreachable, using the copy:", e); }
+    if (!Number.isInteger(n)) n = countMakers(await getText("makers.csv"), hand);
+    showCount(n);
+  })
   .catch(e => { console.warn("banyan card: couldn't count:", e); showCount(null); });
 
 // self-check: card.html?check  (result in the tab title)
