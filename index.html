@@ -912,7 +912,7 @@ if (location.search.includes("check")) {
       ["dappled light follows the cursor onto the card (laptops only, else nothing attached)", await (async () => {
         const card = cards.querySelector(".card"), b = card.getBoundingClientRect();
         card.dispatchEvent(new PointerEvent("pointermove", { bubbles: true, clientX: b.left + 40, clientY: b.top + 30 }));
-        await new Promise(requestAnimationFrame);
+        await new Promise(r => { requestAnimationFrame(r); setTimeout(r, 300); });   // hidden tabs get no frames: never hang, just report
         const lit = card.classList.contains("lit"), mx = card.style.getPropertyValue("--mx"), my = card.style.getPropertyValue("--my");
         return DAPPLE ? lit && mx === "40px" && my === "30px" && !!cards.style.getPropertyValue("--dapple")
                       : !lit && !mx && !cards.style.getPropertyValue("--dapple");
