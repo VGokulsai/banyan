@@ -510,7 +510,7 @@ function parseCSV(t){   // RFC 4180: quoted fields, "" escapes, commas and newli
 }
 // makers type their own links, so only http(s) and mailto get through — never javascript: or data:
 function safeUrl(u){
-  u = String(u || "").trim().replace(/[.,;]+$/, "");
+  u = String(u || "").trim().replace(/^[\[(<"']+|[\])>"']+$/g, "").replace(/[.,;]+$/, "");   // people write [link] or (link)
   const mail = u.replace(/^mailto:/i, "");
   if (/^[^\s@\/:]+@[^\s@\/:]+\.[a-z]{2,}$/i.test(mail)) return "mailto:" + mail;
   if (!/^[a-z][a-z0-9+.-]*:/i.test(u)) u = "https://" + u;
@@ -529,7 +529,7 @@ function rowToMaker(o){
   if (!slug(name) || !/^\d{4}-\d{2}$/.test(o.added || "")) return null;
   const age = parseInt(o.age, 10);
   const links = [...new Set((o.links || "").split(/[\s,]+/).map(safeUrl).filter(u => u.startsWith("http")))].slice(0, 6);
-  const reach = safeUrl((o.contact || "").split(/[\s,]+/)[0]);
+  const reach = (o.contact || "").split(/[\s,]+/).map(safeUrl).find(Boolean) || "";   // first usable link or email, so "Instagram: x, Mail: a@b.co" works
   return {
     name, city: tidyCase((o.city || "").trim()), age: age >= 10 && age <= 25 ? age : undefined, added: o.added,
     crafts: (o.crafts || "").split(/[,;\/]/).map(s => s.trim()).filter(Boolean),
@@ -850,6 +850,10 @@ if (location.search.includes("check")) {
         const btns = [...cards.querySelectorAll('a.act[href*="entry.74019584"]')], ed = editingSlug();
         return ed ? btns.length === 1 && btns[0].closest(".card").id === ed : btns.length === 0;
       })()],
+      ["links in [brackets] and labelled contacts still work", safeUrl("[https://drive.google.com/x]") === "https://drive.google.com/x"
+        && rowToMaker({ added: "2026-09", name: "Kid", crafts: "Code", blurb: "x", links: "Moncoopter [https://drive.google.com/x]",
+                        contact: "Instagram: kid_1, Mail: kid@x.co" }).reach.url === "mailto:kid@x.co"
+        && rowToMaker({ added: "2026-09", name: "Kid", crafts: "Code", blurb: "x", links: "Moncoopter [https://drive.google.com/x]", contact: "" }).ships.length === 1],
       ["form row → maker", row.name === "Test Kid" && row.age === undefined && row.city === "Pune" && row.crafts.length === 2
         && row.ships.length === 1 && row.ships[0].label === "YouTube" && row.reach.url === "mailto:a@b.co"],
       ["month label", fmtMonth("2026-09") === "Sep 2026"],
