@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Banyan for people who hire</title>
+<meta name="description" content="Get up to three hand-picked young makers from India a month. Every one checked by hand, their work public. Free, no obligation.">
+<meta name="theme-color" content="#F1F0E9">
+<link rel="canonical" href="https://banyanmakers.pages.dev/lookers.html">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://banyanmakers.pages.dev/lookers.html">
+<meta property="og:title" content="Banyan for people who hire">
+<meta property="og:description" content="Up to three hand-picked young makers a month. Free, no obligation.">
+<meta property="og:image" content="https://banyanmakers.pages.dev/og.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23F1F0E9'/%3E%3Ccircle cx='9' cy='13' r='5.6' fill='%232F4A3E'/%3E%3Ccircle cx='16' cy='9.5' r='6.6' fill='%232F4A3E'/%3E%3Ccircle cx='23' cy='13' r='5.6' fill='%232F4A3E'/%3E%3Crect x='5' y='12' width='22' height='5.4' rx='2.7' fill='%232F4A3E'/%3E%3Cpath d='M14.3 16h3.4v11.2h-3.4z' fill='%2343442B'/%3E%3Cpath d='M8.2 17.5v9.7M23.8 17.5v9.7' stroke='%2343442B' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* same tokens as index.html; --warn is the one addition, for form errors */
+  :root{
+    --bg:#F1F0E9; --card:#F8F7F2; --line:#DCD6C6;
+    --ink:#151513; --muted:#5E5A50; --accent:#2F4A3E; --moss:#778E69; --sage:#BCC399; --rifle:#43442B;
+    --edge:rgba(47,74,62,.28); --warn:#8A4632;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:17px/1.6 "Instrument Sans","Segoe UI",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;display:flex;justify-content:center}
+  .wrap{width:100%;max-width:1120px;padding:24px 16px 64px}
+  .mono{font-family:"JetBrains Mono",ui-monospace,monospace;text-transform:uppercase;letter-spacing:.1em;font-size:.7rem;font-weight:400;color:var(--muted);margin:0}
+  a{color:inherit}
+  button,input,textarea{font:inherit}
+
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+  .brand .logo{height:34px;width:auto;display:block}
+  .mark{font-family:"Instrument Serif",Georgia,serif;font-size:1.8rem;line-height:1;color:var(--accent)}
+  header nav a{font-family:"JetBrains Mono",monospace;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);text-decoration:none;padding:12px 4px;display:inline-block}
+  header nav a:hover{color:var(--accent)}
+
+  .pitch{margin-top:30px}
+  h1{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:clamp(2.4rem,7vw,3.9rem);line-height:1.04;letter-spacing:-.01em;margin:10px 0 0}
+  h1 em{font-style:italic;color:var(--accent)}
+  .tagline{color:var(--muted);font-size:1.1rem;margin:14px 0 0;max-width:46ch}
+  .tagline b{color:var(--ink);font-weight:600}
+  .promise{margin:20px 0 0;padding:14px 18px;list-style:none;border:1px solid var(--edge);border-radius:14px;background:var(--card)}
+  .promise li{padding:4px 0 4px 22px;position:relative;font-size:.95rem}
+  .promise li::before{content:"";position:absolute;left:2px;top:.72em;width:9px;height:9px;border-radius:50%;background:var(--moss)}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:.7rem 1.25rem;border-radius:999px;text-decoration:none;cursor:pointer;
+    font-family:"JetBrains Mono",monospace;font-weight:600;font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;
+    background:var(--accent);color:var(--bg);border:1px solid var(--accent);transition:background .15s,transform .1s}
+  .btn:active{transform:scale(.97)}
+
+  /* the form: one card, big targets, 16px+ text so phones don't zoom in */
+  .panel{margin-top:28px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 18px;display:grid;gap:18px}
+  .field{display:grid;gap:6px;min-width:0}
+  .field > label,.field legend{font-family:"JetBrains Mono",monospace;text-transform:uppercase;letter-spacing:.1em;font-size:.7rem;color:var(--muted);padding:0}
+  fieldset{border:0;margin:0;padding:0;min-width:0}
+  input[type=text],input[type=email],textarea{width:100%;min-height:50px;padding:.7rem .9rem;font-size:1rem;color:var(--ink);
+    background:var(--bg);border:1px solid var(--line);border-radius:12px;transition:border-color .15s}
+  textarea{min-height:108px;resize:vertical;line-height:1.45}
+  input:focus,textarea:focus{outline:2px solid var(--moss);outline-offset:1px;border-color:var(--moss)}
+  [aria-invalid=true]{border-color:var(--warn)}
+  .err{margin:0;font-size:.86rem;color:var(--warn)}
+  .err:empty{display:none}
+  .count{display:flex;gap:8px;margin-top:6px}
+  .count label{flex:1;position:relative}
+  .count input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+  .count span{display:grid;place-items:center;min-height:50px;border:1px solid var(--line);border-radius:999px;background:var(--bg);
+    font-family:"JetBrains Mono",monospace;font-size:.95rem;color:var(--muted);transition:all .15s}
+  .count input:checked + span{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+  .count input:focus-visible + span{outline:2px solid var(--moss);outline-offset:2px}
+  .panel .btn{width:100%}
+  .how{margin:-8px 0 0;font-size:.86rem;color:var(--muted);text-align:center}
+  .alt{margin:0;font-size:.86rem;color:var(--muted);text-align:center;overflow-wrap:anywhere}
+  .alt a{color:var(--accent);font-weight:600;text-decoration:none;border-bottom:1px solid var(--edge)}
+
+  footer{margin-top:44px;color:var(--muted);font-family:"JetBrains Mono",monospace;font-size:.72rem;letter-spacing:.05em;text-align:center;line-height:1.8}
+  footer a{color:var(--accent)}
+
+  @media (min-width:900px){
+    .wrap{padding:36px 32px 90px}
+    .brand .logo{height:40px}
+    .mark{font-size:2.05rem}
+    main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:start;margin-top:44px}
+    .pitch{margin-top:12px}
+    .panel{margin-top:0;padding:28px 28px}
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <a class="brand" href="./" aria-label="Banyan home"><span id="logo"></span><span class="mark">Banyan</span></a>
+      <nav><a href="./#makers">See the makers</a></nav>
+    </header>
+
+    <main>
+      <div class="pitch">
+        <p class="mono">For people who hire</p>
+        <h1>Three young makers a month, <em>picked by hand.</em></h1>
+        <p class="tagline">Tell us what you need help with. Each month you get up to three makers from Banyan whose work fits, by email. <b>No obligation.</b></p>
+        <ul class="promise">
+          <li>Every maker is checked by hand before they go on Banyan.</li>
+          <li>Their work is public. Open it before you reply to anyone.</li>
+          <li>Free, for you and for them.</li>
+          <li>No promises either way. It's an introduction, not a contract.</li>
+        </ul>
+      </div>
+
+      <form class="panel" id="ask" novalidate>
+        <div class="field">
+          <label for="f-name">Your name</label>
+          <input type="text" id="f-name" name="name" autocomplete="name" required aria-describedby="e-name">
+          <p class="err" id="e-name" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="f-company">Company or project</label>
+          <input type="text" id="f-company" name="company" autocomplete="organization" required aria-describedby="e-company">
+          <p class="err" id="e-company" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="f-need">What do you need help with?</label>
+          <textarea id="f-need" name="need" required aria-describedby="e-need" placeholder="A video editor for launch clips, a React dev for a month, a logo..."></textarea>
+          <p class="err" id="e-need" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="f-email">Your email</label>
+          <input type="email" id="f-email" name="email" autocomplete="email" inputmode="email" required aria-describedby="e-email">
+          <p class="err" id="e-email" aria-live="polite"></p>
+        </div>
+        <fieldset class="field">
+          <legend>Makers a month</legend>
+          <div class="count">
+            <label><input type="radio" name="n" value="1"><span>1</span></label>
+            <label><input type="radio" name="n" value="2"><span>2</span></label>
+            <label><input type="radio" name="n" value="3" checked><span>3</span></label>
+          </div>
+        </fieldset>
+        <button class="btn" type="submit">Yes, send me makers →</button>
+        <p class="how">Opens your email app with this filled in. You press send.</p>
+        <p class="alt">No email app? Write to <a href="mailto:gokulsai1004@gmail.com">gokulsai1004@gmail.com</a></p>
+      </form>
+    </main>
+
+    <footer><a href="./">Banyan</a> &middot; young makers in India, seen</footer>
+  </div>
+
+<script src="tree.js"></script>
+<script>
+document.getElementById("logo").innerHTML = treeSVG({ cls: "logo" });
+
+const TO = "gokulsai1004@gmail.com";
+const emailOk = e => /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)*\.[a-z]{2,}$/i.test(e);
+// where the visitor came from (the event QR adds ?from=echai), so replies can be traced. Letters only, short.
+const FROM = (new URLSearchParams(location.search).get("from") || "").replace(/[^a-z0-9-]/gi, "").slice(0, 30);
+
+function readForm(form){
+  const d = new FormData(form), v = k => String(d.get(k) || "").trim();
+  return { name: v("name"), company: v("company"), need: v("need"), email: v("email"), n: v("n") };
+}
+// field name → what's wrong. Empty object = good to go.
+function problems(f){
+  const bad = {};
+  if (!f.name) bad.name = "Add your name.";
+  if (!f.company) bad.company = "Add your company or project.";
+  if (!f.need) bad.need = "Say what you need help with, even in a line.";
+  if (!f.email) bad.email = "Add your email.";
+  else if (!emailOk(f.email)) bad.email = "That email doesn't look right.";
+  if (!["1", "2", "3"].includes(f.n)) bad.n = "Pick 1, 2 or 3.";
+  return bad;
+}
+function mailto(f, from = FROM){
+  const n = +f.n, makers = n === 1 ? "1 maker" : n + " makers";
+  const subject = `Banyan: ${makers} a month for ${f.company}`;
+  const body = [
+    "Hi Gokul,", "",
+    `I'd like ${makers} a month from Banyan.`, "",
+    "Name: " + f.name,
+    "Company or project: " + f.company,
+    "Email: " + f.email,
+    "Makers a month: " + n, "",
+    "What I need help with:", f.need,
+    ...(from ? ["", "(via " + from + ")"] : [])
+  ].join("\n");
+  return `mailto:${TO}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+let openMail = url => { location.href = url; };   // swapped out by the self-check
+const form = document.getElementById("ask");
+form.addEventListener("submit", e => {
+  e.preventDefault();
+  const f = readForm(form), bad = problems(f);
+  let first = null;
+  ["name", "company", "need", "email"].forEach(k => {
+    const input = form.elements[k];
+    input.setAttribute("aria-invalid", bad[k] ? "true" : "false");
+    document.getElementById("e-" + k).textContent = bad[k] || "";
+    if (bad[k] && !first) first = input;
+  });
+  if (first) { first.focus(); return; }
+  openMail(mailto(f));
+});
+
+// self-check: lookers.html?check  (result in the tab title)
+if (location.search.includes("check")) {
+  const opened = [];
+  openMail = url => opened.push(url);
+  const good = { name: "Asha Rao", company: "R&D #1 = yes?", need: "a video editor\nfor 2 weeks + launch", email: "asha@startup.in", n: "2" };
+  const u = mailto(good, "echai");
+  const [addr, query] = u.slice("mailto:".length).split("?");
+  const params = query.split("&").map(p => p.split("=")), get = k => decodeURIComponent((params.find(p => p[0] === k) || [])[1] || "");
+  const fill = f => Object.entries(f).forEach(([k, v]) => { if (k === "n") form.querySelector(`input[name=n][value="${v}"]`).checked = true; else form.elements[k].value = v; });
+  const submit = () => form.dispatchEvent(new Event("submit", { cancelable: true }));
+  fill({ ...good, email: "not-an-email" }); submit();
+  const blockedBad = opened.length === 0 && document.getElementById("e-email").textContent !== "";
+  fill(good); submit();
+  const results = [
+    ["mailto goes to gokulsai1004@gmail.com", addr === "gokulsai1004@gmail.com"],
+    ["subject and body are encoded (& # ? = + and newlines survive)", params.length === 2 && params[0][0] === "subject" && params[1][0] === "body"
+      && !/[\s#&]/.test(query.replace(/&body=/, "")) && get("subject").includes("R&D #1 = yes?")
+      && get("body").includes("a video editor\nfor 2 weeks + launch") && get("body").includes("asha@startup.in") && get("body").includes("(via echai)")],
+    ["bad emails rejected, good ones pass", ["not-an-email", "a@b", "a b@c.co", "a@b.c", "@b.co", "a@@b.co", ""].every(e => problems({ ...good, email: e }).email)
+      && !Object.keys(problems(good)).length],
+    ["empty fields and a bad maker count rejected", ["name", "company", "need"].every(k => problems({ ...good, [k]: "" })[k]) && problems({ ...good, n: "7" }).n],
+    ["invalid form never opens mail, shows the error", blockedBad],
+    ["valid form opens exactly one mailto", opened.length === 1 && opened[0] === mailto(good)],
+    ["logo drawn", !!document.querySelector("#logo svg path")],
+    ["no sideways scroll", document.documentElement.scrollWidth <= innerWidth]
+  ];
+  const fails = results.filter(r => !r[1]).map(r => r[0]);
+  document.title = fails.length ? "FAIL " + fails.join(", ") : "OK";
+  console.log("lookers self-check:", results);
+}
+</script>
+</body>
+</html>

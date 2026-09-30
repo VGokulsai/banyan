@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Banyan card</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#F1F0E9">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23F1F0E9'/%3E%3Ccircle cx='9' cy='13' r='5.6' fill='%232F4A3E'/%3E%3Ccircle cx='16' cy='9.5' r='6.6' fill='%232F4A3E'/%3E%3Ccircle cx='23' cy='13' r='5.6' fill='%232F4A3E'/%3E%3Crect x='5' y='12' width='22' height='5.4' rx='2.7' fill='%232F4A3E'/%3E%3Cpath d='M14.3 16h3.4v11.2h-3.4z' fill='%2343442B'/%3E%3Cpath d='M8.2 17.5v9.7M23.8 17.5v9.7' stroke='%2343442B' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* the card Gokul holds up at events: one phone screen, no scrolling. Same tokens as index.html. */
+  :root{
+    --bg:#F1F0E9; --card:#F8F7F2; --line:#DCD6C6;
+    --ink:#151513; --muted:#5E5A50; --accent:#2F4A3E; --moss:#778E69; --edge:rgba(47,74,62,.28);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink)}
+  body{font:17px/1.5 "Instrument Sans","Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .screen{max-width:460px;margin:0 auto;min-height:100vh;min-height:100dvh;padding:max(22px,env(safe-area-inset-top)) 16px max(18px,env(safe-area-inset-bottom));
+    display:flex;flex-direction:column;justify-content:space-between;gap:14px}
+  .badge{display:flex;align-items:center;gap:12px}
+  .badge svg{height:62px;width:auto;display:block}
+  .mark{font-family:"Instrument Serif",Georgia,serif;font-size:2.5rem;line-height:1;color:var(--accent)}
+  h1{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:clamp(2rem,9.4vw,2.7rem);line-height:1.05;letter-spacing:-.01em;margin:0}
+  h1 em{font-style:italic;color:var(--accent)}
+  .count{margin:12px 0 0;font-family:"JetBrains Mono",monospace;text-transform:uppercase;letter-spacing:.1em;font-size:.78rem;color:var(--muted)}
+  .count b{color:var(--accent);font-weight:500;font-size:1rem}
+  .count[hidden]{display:block;visibility:hidden}   /* keeps its space; shown only once it can actually count */
+  .scan{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px 14px 16px;text-align:center}
+  .qr{display:block;width:min(100%,44vh);height:auto;margin:0 auto;border-radius:8px}
+  .cap{margin:10px 0 0;font-family:"Instrument Serif",Georgia,serif;font-style:italic;font-size:1.45rem;line-height:1.2;color:var(--accent)}
+  .url{margin:4px 0 0;font-family:"JetBrains Mono",monospace;font-size:.72rem;letter-spacing:.05em;color:var(--muted)}
+</style>
+</head>
+<body>
+  <div class="screen">
+    <div class="badge"><span id="badge"></span><span class="mark">Banyan</span></div>
+    <div>
+      <h1>Young makers in India, <em>checked by hand.</em></h1>
+      <!-- hidden until both files are read; a failed read shows no number at all, never a zero or an old guess -->
+      <p class="count" id="count" hidden><b id="count-n"></b> <span id="count-word"></span> on Banyan</p>
+    </div>
+    <div class="scan">
+      <!-- qr:start --><svg class="qr" viewBox="0 0 41 41" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" role="img" aria-label="QR code for https://banyanmakers.pages.dev/lookers.html?from=echai"><rect width="41" height="41" fill="#F1F0E9"/><path fill="#2F4A3E" d="M4 4h7v1h-7zM17 4h2v1h-2zM20 4h1v1h-1zM23 4h3v1h-3zM27 4h1v1h-1zM30 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM13 5h1v1h-1zM15 5h1v1h-1zM17 5h4v1h-4zM22 5h1v1h-1zM26 5h1v1h-1zM30 5h1v1h-1zM36 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM12 6h2v1h-2zM17 6h1v1h-1zM19 6h2v1h-2zM23 6h3v1h-3zM28 6h1v1h-1zM30 6h1v1h-1zM32 6h3v1h-3zM36 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h3v1h-3zM16 7h1v1h-1zM18 7h4v1h-4zM23 7h1v1h-1zM26 7h1v1h-1zM28 7h1v1h-1zM30 7h1v1h-1zM32 7h3v1h-3zM36 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM19 8h1v1h-1zM22 8h3v1h-3zM26 8h2v1h-2zM30 8h1v1h-1zM32 8h3v1h-3zM36 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h2v1h-2zM16 9h5v1h-5zM22 9h1v1h-1zM26 9h1v1h-1zM30 9h1v1h-1zM36 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h1v1h-1zM28 10h1v1h-1zM30 10h7v1h-7zM12 11h1v1h-1zM16 11h1v1h-1zM19 11h1v1h-1zM22 11h1v1h-1zM25 11h1v1h-1zM27 11h1v1h-1zM4 12h1v1h-1zM6 12h5v1h-5zM13 12h3v1h-3zM17 12h1v1h-1zM19 12h1v1h-1zM21 12h1v1h-1zM23 12h1v1h-1zM26 12h3v1h-3zM30 12h5v1h-5zM4 13h1v1h-1zM8 13h1v1h-1zM13 13h1v1h-1zM15 13h2v1h-2zM20 13h4v1h-4zM25 13h1v1h-1zM27 13h1v1h-1zM30 13h2v1h-2zM33 13h2v1h-2zM36 13h1v1h-1zM7 14h1v1h-1zM10 14h1v1h-1zM13 14h3v1h-3zM19 14h1v1h-1zM22 14h1v1h-1zM24 14h1v1h-1zM29 14h2v1h-2zM32 14h1v1h-1zM34 14h2v1h-2zM5 15h1v1h-1zM9 15h1v1h-1zM14 15h2v1h-2zM18 15h3v1h-3zM23 15h1v1h-1zM25 15h1v1h-1zM28 15h1v1h-1zM30 15h1v1h-1zM32 15h5v1h-5zM5 16h1v1h-1zM8 16h3v1h-3zM14 16h1v1h-1zM16 16h1v1h-1zM19 16h1v1h-1zM22 16h1v1h-1zM26 16h2v1h-2zM29 16h1v1h-1zM31 16h3v1h-3zM35 16h2v1h-2zM4 17h1v1h-1zM6 17h1v1h-1zM9 17h1v1h-1zM11 17h1v1h-1zM14 17h2v1h-2zM18 17h3v1h-3zM22 17h3v1h-3zM27 17h2v1h-2zM30 17h2v1h-2zM33 17h1v1h-1zM35 17h2v1h-2zM5 18h2v1h-2zM8 18h4v1h-4zM13 18h2v1h-2zM16 18h1v1h-1zM22 18h1v1h-1zM24 18h3v1h-3zM28 18h3v1h-3zM32 18h2v1h-2zM35 18h1v1h-1zM4 19h1v1h-1zM6 19h1v1h-1zM13 19h2v1h-2zM16 19h2v1h-2zM20 19h1v1h-1zM23 19h1v1h-1zM25 19h2v1h-2zM29 19h3v1h-3zM33 19h2v1h-2zM7 20h4v1h-4zM12 20h1v1h-1zM14 20h1v1h-1zM16 20h1v1h-1zM21 20h1v1h-1zM24 20h1v1h-1zM26 20h2v1h-2zM29 20h1v1h-1zM31 20h2v1h-2zM36 20h1v1h-1zM4 21h1v1h-1zM7 21h1v1h-1zM9 21h1v1h-1zM12 21h2v1h-2zM15 21h3v1h-3zM20 21h5v1h-5zM27 21h1v1h-1zM30 21h2v1h-2zM33 21h2v1h-2zM36 21h1v1h-1zM4 22h3v1h-3zM8 22h3v1h-3zM13 22h2v1h-2zM16 22h4v1h-4zM21 22h1v1h-1zM26 22h1v1h-1zM28 22h1v1h-1zM30 22h3v1h-3zM34 22h2v1h-2zM5 23h1v1h-1zM7 23h3v1h-3zM18 23h1v1h-1zM20 23h4v1h-4zM25 23h3v1h-3zM31 23h4v1h-4zM4 24h1v1h-1zM6 24h1v1h-1zM8 24h1v1h-1zM10 24h2v1h-2zM14 24h2v1h-2zM17 24h1v1h-1zM20 24h1v1h-1zM26 24h4v1h-4zM32 24h2v1h-2zM35 24h2v1h-2zM4 25h1v1h-1zM6 25h2v1h-2zM11 25h2v1h-2zM18 25h2v1h-2zM22 25h4v1h-4zM27 25h1v1h-1zM29 25h2v1h-2zM36 25h1v1h-1zM4 26h1v1h-1zM6 26h1v1h-1zM8 26h3v1h-3zM13 26h3v1h-3zM17 26h5v1h-5zM24 26h2v1h-2zM31 26h3v1h-3zM35 26h1v1h-1zM4 27h1v1h-1zM6 27h2v1h-2zM12 27h1v1h-1zM15 27h2v1h-2zM18 27h2v1h-2zM24 27h3v1h-3zM30 27h2v1h-2zM33 27h2v1h-2zM36 27h1v1h-1zM4 28h1v1h-1zM8 28h5v1h-5zM15 28h1v1h-1zM19 28h1v1h-1zM21 28h1v1h-1zM24 28h1v1h-1zM26 28h7v1h-7zM35 28h1v1h-1zM12 29h6v1h-6zM22 29h3v1h-3zM28 29h1v1h-1zM32 29h1v1h-1zM34 29h1v1h-1zM36 29h1v1h-1zM4 30h7v1h-7zM13 30h1v1h-1zM17 30h1v1h-1zM19 30h2v1h-2zM22 30h1v1h-1zM24 30h5v1h-5zM30 30h1v1h-1zM32 30h1v1h-1zM34 30h2v1h-2zM4 31h1v1h-1zM10 31h1v1h-1zM12 31h1v1h-1zM17 31h2v1h-2zM24 31h5v1h-5zM32 31h5v1h-5zM4 32h1v1h-1zM6 32h3v1h-3zM10 32h1v1h-1zM12 32h1v1h-1zM14 32h3v1h-3zM19 32h1v1h-1zM22 32h1v1h-1zM28 32h6v1h-6zM35 32h2v1h-2zM4 33h1v1h-1zM6 33h3v1h-3zM10 33h1v1h-1zM12 33h2v1h-2zM15 33h1v1h-1zM18 33h3v1h-3zM23 33h2v1h-2zM26 33h4v1h-4zM32 33h5v1h-5zM4 34h1v1h-1zM6 34h3v1h-3zM10 34h1v1h-1zM12 34h1v1h-1zM15 34h1v1h-1zM24 34h1v1h-1zM28 34h1v1h-1zM30 34h2v1h-2zM33 34h2v1h-2zM4 35h1v1h-1zM10 35h1v1h-1zM14 35h5v1h-5zM20 35h1v1h-1zM24 35h3v1h-3zM29 35h1v1h-1zM32 35h3v1h-3zM4 36h7v1h-7zM12 36h3v1h-3zM18 36h1v1h-1zM20 36h2v1h-2zM23 36h1v1h-1zM26 36h3v1h-3zM31 36h1v1h-1zM33 36h1v1h-1zM35 36h1v1h-1z"/></svg><!-- qr:end -->
+      <p class="cap">Scan: get 3 makers a month</p>
+      <p class="url">banyanmakers.pages.dev</p>
+    </div>
+  </div>
+
+<script src="tree.js"></script>
+<script>
+document.getElementById("badge").innerHTML = treeSVG({ ring: true });
+
+// These three are copied from index.html, so the count here is the count the site shows.
+const slug = n => n.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+function parseCSV(t){   // RFC 4180: quoted fields, "" escapes, commas and newlines inside quotes
+  const rows = []; let row = [], cell = "", q = false;
+  for (let i = 0; i < t.length; i++) {
+    const ch = t[i];
+    if (q) { if (ch !== '"') cell += ch; else if (t[i + 1] === '"') { cell += '"'; i++; } else q = false; }
+    else if (ch === '"') q = true;
+    else if (ch === ",") { row.push(cell); cell = ""; }
+    else if (ch === "\n" || ch === "\r") { if (ch === "\r" && t[i + 1] === "\n") i++; row.push(cell); rows.push(row); row = []; cell = ""; }
+    else cell += ch;
+  }
+  if (cell || row.length) { row.push(cell); rows.push(row); }
+  return rows;
+}
+async function getText(url){
+  const r = await fetch(url + (url.includes("?") ? "&" : "?") + "t=" + Math.floor(Date.now() / 60000));   // per-minute, skips stale caches
+  if (!r.ok) throw new Error("HTTP " + r.status);
+  return r.text();
+}
+
+// The hand-written makers are read out of index.html's MAKERS array itself, so this can't fall behind it.
+// null = couldn't find the array (couldn't look), which is not the same as an empty one.
+function handNames(html){
+  const block = /const MAKERS = \[([\s\S]*?)\n\];/.exec(html);
+  return block ? [...block[1].matchAll(/^\s*name:\s*"([^"]*)"/gm)].map(m => m[1]) : null;
+}
+// Same rule as index.html's useCSV + rowToMaker + mergeUpdates: hand-written makers all count; a sheet row counts
+// if it has a name and a YYYY-MM month, once per name slug, and not if that name is already hand-written.
+function countMakers(csv, hand){
+  const [head, ...rows] = parseCSV(csv);
+  if (!hand || !head || !head.includes("name")) return null;
+  const col = k => head.findIndex(h => h.trim() === k), ni = col("name"), ai = col("added");
+  const have = new Set(hand.map(slug)), fromSheet = new Set();
+  rows.forEach(r => {
+    const s = slug((r[ni] || "").trim());
+    if (s && /^\d{4}-\d{2}$/.test(r[ai] || "") && !have.has(s)) fromSheet.add(s);
+  });
+  return hand.length + fromSheet.size;
+}
+function showCount(n){
+  const ok = Number.isInteger(n);
+  document.getElementById("count").hidden = !ok;
+  if (ok) { document.getElementById("count-n").textContent = n; document.getElementById("count-word").textContent = n === 1 ? "maker" : "makers"; }
+}
+const counted = Promise.all([getText("./"), getText("makers.csv")])
+  .then(([html, csv]) => showCount(countMakers(csv, handNames(html))))
+  .catch(e => { console.warn("banyan card: couldn't count:", e); showCount(null); });
+
+// self-check: card.html?check  (result in the tab title)
+if (location.search.includes("check")) {
+  (async () => {
+    await counted;
+    const shownAfterLoad = !document.getElementById("count").hidden;
+    const csv = 'added,name,age,city,crafts,blurb,links,contact\n' +
+      '2026-09,Asha Rao,15,Pune,"Code, Design","Makes games, and\n2026-09,Not A Row,1,x,x,x,x,x",https://a.co,\n' +   // quoted comma + newline
+      '2026-10,asha  rao,,,Video,"new work, same person",https://b.co,\n' +   // same person again
+      '2026-09,Gokul Sai,16,Hyderabad,Code,already hand-written,,\n' +
+      'someday,No Month,,,,,,\n' +
+      '2026-09,,,,,,,\n';
+    const [index, tree] = await Promise.all([getText("./"), getText("tree.js")]);
+    const norm = s => s.replace(/\r\n/g, "\n").trim();
+    const copied = norm(tree.split("// ---- copied from index.html ----")[1] || "");
+    showCount(null); const hidesOnFail = document.getElementById("count").hidden;
+    await counted.then(() => getText("makers.csv")).then(t => showCount(countMakers(t, handNames(index))));
+    const results = [
+      ["count: quoted commas and newlines, repeats, hand-written and bad rows", countMakers(csv, ["Gokul Sai"]) === 2],
+      ["count: no hand-written list or a strange file gives no number", countMakers(csv, null) === null && countMakers("<html>oops</html>", ["Gokul Sai"]) === null],
+      ["a failed read shows no number", hidesOnFail],
+      ["hand-written makers read from index.html", (handNames(index) || []).includes("Gokul Sai")],
+      ["live count shown", shownAfterLoad && /^\d+$/.test(document.getElementById("count-n").textContent)],
+      ["tree.js still matches index.html", copied.length > 1000 && norm(index).includes(copied)],
+      ["badge drawn", !!document.querySelector("#badge svg circle")],
+      ["qr embedded", !!document.querySelector("svg.qr path")],
+      ["fits one screen, no scrolling", document.documentElement.scrollHeight <= innerHeight && document.documentElement.scrollWidth <= innerWidth]
+    ];
+    const fails = results.filter(r => !r[1]).map(r => r[0]);
+    document.title = fails.length ? "FAIL " + fails.join(", ") : "OK";
+    console.log("card self-check:", results, innerWidth + "x" + innerHeight);
+  })();
+}
+</script>
+</body>
+</html>

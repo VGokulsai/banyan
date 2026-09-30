@@ -164,8 +164,8 @@
   .panel h3{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:clamp(1.7rem,4.4vw,2.2rem);line-height:1.1;margin:0 0 8px}
   .panel p{margin:0;color:var(--muted)}
   .panel .pull{margin-top:12px;font-family:"Instrument Serif",Georgia,serif;font-style:italic;font-size:1.3rem;color:var(--accent)}
-  .panel .btn{justify-self:start}
-  @media (min-width:900px){ .panel{grid-template-columns:1fr auto;padding:32px 36px;gap:32px} .panel .btn{justify-self:end} }
+  .panel-cta{display:flex;gap:10px;flex-wrap:wrap}
+  @media (min-width:900px){ .panel{grid-template-columns:1fr auto;padding:32px 36px;gap:32px} .panel-cta{flex-direction:column;align-items:stretch} .panel-cta .btn{justify-content:center} }
   .promise{margin:18px 0 0;padding:16px 18px;list-style:none;border:1px solid var(--edge);border-radius:14px;background:var(--card)}
   .promise li{padding:4px 0 4px 22px;position:relative;font-size:.95rem}
   .promise li::before{content:"";position:absolute;left:2px;top:.72em;width:9px;height:9px;border-radius:50%;background:var(--moss)}
@@ -252,7 +252,10 @@
           <p>Every maker here links to work you can open right now. Reach them through the contact they chose to share.</p>
           <p class="pull">No résumés, no marks. Just the work.</p>
         </div>
-        <a class="btn ghost" href="#makers">Browse the makers ↑</a>
+        <div class="panel-cta">
+          <a class="btn" href="lookers.html">Get 3 makers a month →</a>
+          <a class="btn ghost" href="#makers">Browse the makers ↑</a>
+        </div>
       </div>
     </section>
 
@@ -817,6 +820,7 @@ if (location.search.includes("check")) {
       ["filter hidden while only one craft", chips.hidden === (Object.keys(counts).length < 2)],
       ["filter hides non-matching", (() => { filterTo("__none__"); const h = [...cards.querySelectorAll(".card")].every(x => x.hidden); filterTo("All"); return h; })()],
       ["escapes html", esc("<b>") === "&lt;b&gt;"],
+      ["hiring panel offers makers a month (lookers.html)", !!document.querySelector('#hiring .panel a.btn:not(.ghost)[href="lookers.html"]')],
       ["both submit buttons go to the form", $("#submit").getAttribute("href") === SUBMIT_URL && $("#hero-submit").getAttribute("href") === SUBMIT_URL],
       ["youtube: videos get a picture, channels and fakes don't", ytId("https://youtu.be/dQw4w9WgXcQ") === "dQw4w9WgXcQ"
         && ytId("https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=30s") === "dQw4w9WgXcQ" && ytId("https://youtube.com/shorts/dQw4w9WgXcQ") === "dQw4w9WgXcQ"
